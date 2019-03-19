@@ -16,6 +16,7 @@ import DetailPage from '../page/DetailPage';
 import FavoritePage from '../page/FavoritePage';
 import SelcategoryPage from '../page/SelcategoryPage';
 import CodePushPage from '../page/CodePushPage';
+import WebviewDeatil from '../page/WebviewDeatil';
 import SortcategoryPage from '../page/SortcategoryPage';
 import { connect } from 'react-redux';
 import {createReactNavigationReduxMiddleware, reduxifyNavigator} from 'react-navigation-redux-helpers';
@@ -127,6 +128,12 @@ const MainNavigator = createStackNavigator({
       navigationOptions: {
         header: null
       }      
+    },
+    WebviewDeatil: {
+      screen:WebviewDeatil,
+      navigationOptions: {
+        header: null
+      }     
     }
   }, {
     defaultNavigationOptions: {

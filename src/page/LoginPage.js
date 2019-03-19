@@ -43,13 +43,12 @@ class LoginPage extends Component {
     render(){
         return (
             <ScrollView style={styles.container}>
-                <NavigationBar leftButton={this.leftButtonPart(require('../../res/common/return.png'))} title={'登录'}/>
+                <NavigationBar title={'登录'}/>
                 <WingBlank>
                     <Flex direction={"column"}>
                         <Flex justify={"center"} style={{width:300,height:150}}>
                             <Image
                                 style={{width: 50, height: 50,borderRadius:6}}
-                                source={require('../../res/yglogo.png')}
                             ></Image>
                         </Flex>
                         <View style={{width:300,height:200,paddingTop:10}}>
@@ -104,7 +103,6 @@ class LoginPage extends Component {
                             <Image
                                 resizeMode={('contain')}
                                 style={{width: 26, height: 26}}
-                                source={require('../../res/login/sf.png')}
                             ></Image>
                             <Text style={{fontSize:10,color:'#666',marginTop:3}}>微信登录</Text>
                         </Flex>

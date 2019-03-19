@@ -6,13 +6,13 @@ import {_projectModels, handleData} from '../ActionUtil';
  * 获取推荐数据的异步action
  */
 
- export function onRefreshRecommend(storeName,url,pageSize,favoriteDaoCollection,favoriteDaoLike,favoriteDaoConcern) {
+ export function onRefreshRecommend(storeName,url,pageSize,favoriteDao) {
      return dispatch => {
          dispatch({type: Types.RECOMMEND_REFRESH,storeName: storeName});
          let dataStore = new DataStore();
          dataStore.fetchData(url)//异步action与数据流
             .then(data => {
-                handleData(Types.RECOMMEND_REFRESH_SUCCESS,dispatch,storeName,data,pageSize,favoriteDaoCollection,favoriteDaoLike,favoriteDaoConcern)
+                handleData(Types.RECOMMEND_REFRESH_SUCCESS,dispatch,storeName,data,pageSize,favoriteDao)
             })
             .catch(error => {
                 console.log("error",error);
@@ -29,7 +29,7 @@ import {_projectModels, handleData} from '../ActionUtil';
   * 加载更多
   */
 
-  export function onLoadMoreRecommend(storeName,pageIndex,pageSize,dataArray=[],favoriteDaoCollection,favoriteDaoLike,favoriteDaoConcern,callBack) {
+  export function onLoadMoreRecommend(storeName,pageIndex,pageSize,dataArray=[],favoriteDao,callBack) {
     return dispatch => {
           setTimeout(()=> {//模拟网络请求
                 if ((pageIndex - 1) * pageSize >= dataArray.length) {//已加载完全部数据
@@ -45,7 +45,7 @@ import {_projectModels, handleData} from '../ActionUtil';
                 } else {
                     //本次和载入的最大数量
                     let max = pageSize * pageIndex > dataArray.length ? dataArray.length : pageSize * pageIndex;
-                    _projectModels(dataArray.slice(0,max), favoriteDaoCollection, favoriteDaoLike, favoriteDaoConcern, data => {
+                    _projectModels(dataArray.slice(0,max), favoriteDao, data => {
                         dispatch({
                             type: Types.RECOMMEND_LOAD_MORE_SUCCESS,
                             storeName,

@@ -19,7 +19,7 @@ class SortcategoryPage extends Component {
         console.log("sortprops",JSON.stringify(props))
         this.params = this.props.navigation.state.params;
         this.backPress = new BackPressComponent({backPress: (e) => this.onBackPress(e)})
-        this.categoryDao = new CategoryDao(FLAG_CATEGORY.flag_key);
+        this.categoryDao = new CategoryDao(FLAG_CATEGORY.flag_category);
         this.state = {
             checkedArray: SortcategoryPage._keys(this.props)
         }
@@ -40,7 +40,7 @@ class SortcategoryPage extends Component {
         //如果props中标签为空则从本地存储中获取标签
         if (SortcategoryPage._keys(this.props).length === 0) {
             let {onLoadCategory} = this.props;
-            onLoadCategory(FLAG_CATEGORY.flag_key);
+            onLoadCategory(FLAG_CATEGORY.flag_category);
         }
     }
 
@@ -79,7 +79,7 @@ class SortcategoryPage extends Component {
     }
 
     static _flag(props) {
-        const flag = FLAG_CATEGORY.flag_key;
+        const flag = FLAG_CATEGORY.flag_category;
         console.log("inflag",flag)
         return flag === FLAG_CATEGORY.flag_key ? "keys" : "categorys";
     }
@@ -106,7 +106,7 @@ class SortcategoryPage extends Component {
         //重新加载排序后的标签，一边其他页面及时更新
         const {onLoadCategory} = this.props;
         //更新store
-        onLoadCategory(FLAG_CATEGORY.flag_key);
+        onLoadCategory(FLAG_CATEGORY.flag_category);
         NavigationUtil.goBack(this.props.navigation);
     }
 
@@ -135,7 +135,7 @@ class SortcategoryPage extends Component {
         if(!ArrayUtil.isEqual(SortcategoryPage._keys(this.props),this.state.checkedArray)) {
             Alert.alert('提示','要保存修改吗？',[
                 {
-                    teat: '否', onPress: () => {
+                    text: '否', onPress: () => {
                         NavigationUtil.goBack(this.props.navigation)
                     }
                 },{

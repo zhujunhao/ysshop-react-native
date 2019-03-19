@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet,TouchableOpacity, View, DeviceInfo } from 'react-native';
+import { StyleSheet,TouchableOpacity, View, DeviceInfo,Text } from 'react-native';
+import { FLAG_STORAGE } from '../ask/DataStore';
 import { WebView } from 'react-native-webview';
 import NavigationBar from '../common/NavigationBar';
 import ViewUtil from '../util/ViewUtil';
@@ -10,6 +11,7 @@ const THEME_COLOR = '#678';
 import NavigatorUtil from '../navigators/NavigatorUtil';
 import BackPressComponent from '../common/BackPressComponent';
 import FavoriteDao from '../ask/FavoriteDao';
+import SwiperArr from '../common/swiper/swiper';
 
 export default class DetailPage extends Component {
     constructor(props) {
@@ -67,7 +69,7 @@ export default class DetailPage extends Component {
 
     renderRightButton() {
         return (<View style={{flexDirection: 'row'}}>
-            <TouchableOpacity onPress={() => this.onFavoriteButtonClick()}>
+            <TouchableOpacity onPress={() => this.onFavoriteButtonClick()} activeOpacity={1}>
                 <AntDesign
                     name={this.state.isFavorite ? 'heart':'hearto'}
                     size={20}
@@ -75,6 +77,29 @@ export default class DetailPage extends Component {
                 />
             </TouchableOpacity>
         </View>)
+    }
+
+    gotowebDetail(){
+        let {theme,projectModel} = this.params;
+        console.log('this.params',JSON.stringify(this.params))
+        NavigatorUtil.goPage({
+            theme,
+            projectModel: projectModel.item,
+            flag: FLAG_STORAGE.Collection
+        },'WebviewDeatil')
+    }
+
+    webDetail() {
+        return (<View style={{flexDirection:'column',width:30,height:30,justifyContent:'center',alignItems:'center',marginLeft:10}}>
+                    <TouchableOpacity onPress={() => this.gotowebDetail()} activeOpacity={1}>
+                        <AntDesign
+                            name={'filetext1'}
+                            size={20}
+                            style={{color:'#666'}}
+                        />
+                        <Text style={{marginTop:5,justifyContent:'center',alignItems:'center',fontSize:12}}>详情</Text>
+                    </TouchableOpacity>
+                </View>)
     }
 
     onNavigationStateChange(navState) {
@@ -99,12 +124,30 @@ export default class DetailPage extends Component {
                 topColor={theme.themeColor}
             >
                 {navigationBar}
-                <WebView
-                    ref={webView => this.WebView = WebView}
-                    startInLoadingState={true}
-                    onNavigationStateChange={e => this.onNavigationStateChange(e)}
-                    source={{uri : this.state.url}}
-                />
+                <View style={{flex:1,backgroundColor:'#fff'}}>
+                    <SwiperArr></SwiperArr>
+                    <View style={{flexDirection:'column'}}>
+                        <View style={{flexDirection:'row',padding:10,alignItems:'center'}}>
+                            <View style={{flex:1}}>
+                                <Text style={{color:'#333',paddingTop:3,paddingBottom:3}}>券后价第三方开始的副驾驶的荆防颗粒睡大街的话费送积分卡拉斯的减肥了深刻的京东方设计师的风景</Text>
+                            </View>
+                            {this.webDetail()}
+                        </View>
+                        <View style={{flexDirection:'row',height:30,alignItems:'center',marginTop:10}}>
+                            <View style={{height:20,marginLeft:10,borderColor:"#ff4800",backgroundColor:'#ff4800',borderRadius:6,borderWidth:2,paddingLeft:8,paddingRight:8,alignItems:'center',marginRight:10}}>
+                                <Text style={{fontSize:13,color:'#fff',fontWeight:'bold'}}>券后价</Text>
+                            </View>
+                            <Text style={{color:"#ff4800",fontSize:16}}>￥99.99</Text>
+                        </View>
+                        <View style={{flexDirection:'row',justifyContent:'space-between',height:40,padding:10,alignItems:'center',marginBottom:10}}>
+                            <Text>￥99.90</Text>
+                            <Text>已售：99.99万件</Text>
+                        </View>
+                    </View>
+                    <View style={{flex:1,height:50,alignItems:'center',color:'#666',marginTop:20}}>
+                        <Text>------   推荐商品   ------</Text>
+                    </View>
+                </View>
             </SafeAreaViewPlus>
         )
     

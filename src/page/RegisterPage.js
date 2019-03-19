@@ -40,7 +40,7 @@ class RegisterPage extends Component {
     render() {
         return(
             <View style={{flex:1}}>
-                <NavigationBar leftButton={this.leftButtonPart(require('../../res/common/return.png'))} title={'注册'}/>
+                <NavigationBar title={'注册'}/>
                 <ScrollView style={{ flex: 1}}
                     automaticallyAdjustContentInsets={false}
                     showsHorizontalScrollIndicator={false}

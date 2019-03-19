@@ -38,7 +38,7 @@ class Changemob extends Component {
     render(){
         return(
             <View style={{flex:1}}>
-                <NavigationBar leftButton={this.leftButtonPart(require('../../res/common/return.png'))} title={'修改手机号码'}/>
+                <NavigationBar title={'修改手机号码'}/>
                 <ScrollView style={styles.container}>
                     <WingBlank>
                         <Flex direction={"column"} justify={"center"}>

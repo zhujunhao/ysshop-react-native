@@ -1,11 +1,12 @@
 import React from 'react';
-import {DeviceInfo,View,Text,Image,Dimensions,StyleSheet,Platform} from "react-native";
+import {Alert,DeviceInfo,View,Text,Image,Dimensions,StyleSheet,Platform,CameraRoll} from "react-native";
 import BackPressComponent from "../../common/BackPressComponent";
 import NavigationUtil from "../../navigators/NavigatorUtil";
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import GlobalStyles from '../../ask/styles/GlobalStyles.js';
 import share from '../../../res/data/share';
 import ShareUtile from "../../util/ShareUtil";
+import Imgshare from "../../common/Imgshare";
 import ViewUtil from '../../util/ViewUtil.js';
 export const FLAG_ABOUT = {flag_about: 'about',flag_about_me:'about_me'};
 export default class AboutCommon {
@@ -19,6 +20,30 @@ export default class AboutCommon {
     onBackPress() {
         NavigationUtil.goBack(this.props.navigation);
         return true;
+    }
+
+    /**
+     * 保存图片到相册
+     * @param ImageUrl  图片地址
+     * @returns {*}
+     */
+    DownloadLocalImage (uri) {
+        if(!uri)return null;
+        Alert.alert(
+            '分享',
+            '分享的图片会保存到相册中',
+            [
+                {text:'取消',onPress:()=>null},
+                {text:'确定',onPress:()=>[Imgshare._Download(uri)
+                    .then((res)=>{
+                        
+                    })
+                    .catch((error)=>{
+                        console.log('error',error)
+                    })]} //打开遮罩
+            ]
+        );
+
     }
 
     componentDidMount() {
@@ -47,8 +72,10 @@ export default class AboutCommon {
     }
 
     onShare() {
-
+        this.DownloadLocalImage('http://m.qpic.cn/psb?/V14gV2Ft3x6LH8/c9lbJZs5fd3NJ1lgvlGCBjCJz5QJdsHND6.KYxUhq5Y!/b/dLkAAAAAAAAA&bo=QAYqBAAAAAARB1g!&rf=viewer_4')
     }
+
+    
 
     getParallaxRenderConfig(params) {
         let config = {};
@@ -124,7 +151,7 @@ export default class AboutCommon {
 const window = Dimensions.get('window');
 const AVATAR_SIZE = 90;
 const PARALLAX_HEADER_HEIGHT = 230;
-const TOP = (Platform.OS === 'ios') ? 20 + (DeviceInfo.isIPhoneX_deprecated ? 24 : 0) : 0;
+const TOP = (Platform.OS === 'ios') ? 20 + (DeviceInfo.isIPhoneX_deprecated ? 24 : 0) : 15;
 const STICKY_HEADER_HEIGHT = (Platform.OS === 'ios') ? GlobalStyles.nav_bar_height_ios + TOP : GlobalStyles.nav_bar_height_android;
 
 const styles = StyleSheet.create({
@@ -184,3 +211,4 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
 });
+

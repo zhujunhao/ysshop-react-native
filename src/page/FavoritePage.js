@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, RefreshControl,ScrollView, StyleSheet,Dimensions, View} from 'react-native';
+import { FlatList, RefreshControl,ScrollView, StyleSheet,Dimensions, View,Text} from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../action/index';
 import FavouriteItem from '../common/FavouriteItem';
@@ -108,21 +108,24 @@ class FavoritePage extends Component {
         let store = this._store();
         const {theme} = this.props;
         let maxpage = <View style={styles.containerTab}>
-                        <FlatList
-                            data={store.projectModels}
-                            renderItem={data => this.renderItem(data)}
-                            keyExtractor={item => "" + (item.item.id || item.item.fullName)}
-                            refreshControl={
-                                <RefreshControl
-                                    title={'loading'}
-                                    titleColor={theme.themeColor}
-                                    colors={[theme.themeColor]}
-                                    refreshing={store.isLoading}
-                                    onRefresh={()=> this.loadData(true)}
-                                    tintColor={theme.themeColor}
-                                />
-                            }
-                        />
+                        {store.projectModels && store.projectModels.length >0 ?
+                            <FlatList
+                                data={store.projectModels}
+                                renderItem={data => this.renderItem(data)}
+                                keyExtractor={item => "" + (item.item.id || item.item.fullName)}
+                                refreshControl={
+                                    <RefreshControl
+                                        title={'loading'}
+                                        titleColor={theme.themeColor}
+                                        colors={[theme.themeColor]}
+                                        refreshing={store.isLoading}
+                                        onRefresh={()=> this.loadData(true)}
+                                        tintColor={theme.themeColor}
+                                    />
+                                }
+                            /> : <View style={{backgroundColor:'#f5f5f5'}}><Text style={{textAlign:'center',marginTop:100}}>暂时还没有收藏的宝贝哦^_^</Text></View>
+                        }
+
                         <Toast
                             ref={'toast'}
                             position={'center'}
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
     },
     containerTab:{
         flex:1,
-        backgroundColor:'#fff'
+        backgroundColor:'#f5f5f5'
     },
     tabStyle: {
         height:39,

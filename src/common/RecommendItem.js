@@ -5,31 +5,40 @@ import {Dimensions} from "react-native";
 
 export default class RecommendItem extends BaseItem {
     render() {
-        const {projectModel} = this.props;
+        const {projectModel,theme} = this.props;
         console.log("popo125",JSON.stringify(this.props))
         const {item} = projectModel;
         if (!item || !item.owner) return null;
         return (
             <TouchableOpacity
                 onPress={()=>this.onItemClick()}
+                activeOpacity={1}
             >
                 <View style={styles.cell_container}>
                     <View style={styles.ImagePart}>
                         <Image style={styles.picPart}
-                            source={{uri: 'https://upload-images.jianshu.io/upload_images/6874403-e28edfe8069b2c7d.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240'}}
+                            source={{uri: 'https://img.alicdn.com/imgextra/i2/1756135147/O1CN0177ogWg1ntN27Q1Iof_!!1756135147.jpg_310x310.jpg'}}
                         />
                     </View>
-                    <Text style={styles.title}>
-                        {item.full_name.substring(0, 24) + '...'}
+                    <Text style={styles.title} numberOfLines={1}>
+                        {item.full_name}
                     </Text>
                     <View style={styles.row}>
-                        <View style={styles.row}>
-                            <Image style={{height: 22, width: 22,marginLeft:10,borderRadius:11}}
-                                source={{uri: item.owner.avatar_url}}
-                            />
+                        <View style={{flexDirection:'row',width:60,height:16,borderColor:theme.themeColor,borderWidth:1,borderRadius:4}}>
+                            <View style={{alignItems:'center',justifyContent:'center',padding:5,backgroundColor:theme.themeColor}}>
+                                <Text style={{color:'#fff',fontSize:10}}>券</Text>
+                            </View>
+                            <View style={{height:14,width:1,backgroundColor:theme.themeColor}}></View>
+                            <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                                <Text style={{color:theme.themeColor,fontSize:10}}>882元</Text>
+                            </View>
                         </View>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between',alignItems:'center',height:36}}>
-                            <Text>{item.stargazers_count}</Text>
+                        <Text style={{fontSize:10}}>已售：3.33万</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <View style={{height:30,flexDirection: 'row',alignItems:'center'}}>
+                            <Text style={{fontSize:12}}>券后￥:</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold',color:'#666'}}>99.00</Text>
                         </View>
                         {this._favoriteIcon()}
                     </View>
@@ -76,13 +85,17 @@ const styles = StyleSheet.create({
             flexDirection: 'row',
             alignItems: 'center',
             marginTop:5,
-            height:36
+            paddingLeft:8,
+            paddingRight:8,
+            height:20
         },
         title: {
+            flex:1,
             fontSize: 12,
             marginLeft:10,
             marginTop:10,
             color: '#212121',
+            
         }
     }
 );

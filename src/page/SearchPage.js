@@ -10,6 +10,8 @@ import Toast from 'react-native-easy-toast'
 import Utils from "../util/Utils";
 import ViewUtil from '../util/ViewUtil';
 import BackPressComponent from '../common/BackPressComponent';
+import FavoriteDao from '../ask/FavoriteDao';
+const searchHistoryDao = new FavoriteDao(FLAG_STORAGE.History);
 
 
 const pageSize = 10;//设为常量，防止修改
@@ -41,15 +43,15 @@ class SearchPage extends Component {
 
     loadData(loadMore) {
         const {onLoadMoreSearch, onSearch, search, keys} = this.props;
-        console.log("search",search)
+        console.log("searchprops",JSON.stringify(this.props))
         console.log("keys",keys)
         if (loadMore) {
             onLoadMoreSearch(++search.pageIndex, pageSize, search.items, callback => {
-                this.toast.show('没有更多了');
+                this.refs.toast.show('没有更多了');
             })
         } else {
             onSearch(this.inputKey, pageSize, this.searchToken = new Date().getTime(),keys,  message => {
-                this.toast.show(message);
+                this.refs.toast.show(message);
             })
         }
     }
@@ -58,7 +60,7 @@ class SearchPage extends Component {
         const {onSearchCancel, onLoadLanguage} = this.props;
         onSearchCancel();//退出时取消搜索
         this.refs.input.blur();
-        NavigationUtil.goBack(this.props.navigation);
+        NavigatorUtil.goBack(this.props.navigation);
         if (this.isKeyChange) {
             onLoadLanguage(FLAG_LANGUAGE.flag_key);//重新加载标签
         }
@@ -102,7 +104,7 @@ class SearchPage extends Component {
         const {keys} = this.props;
         let key = this.inputKey;
         if (Utils.checkKeyIsExist(keys, key)) {
-            this.toast.show(key + '已经存在');
+            this.refs.toast.show(key + '已经存在');
         } else {
             key = {
                 "path": key,
@@ -110,7 +112,7 @@ class SearchPage extends Component {
                 "checked": true
             };
             keys.unshift(key);//将key添加到数组的开头
-            this.toast.show(key.name + '保存成功');
+            this.refs.toast.show(key.name + '保存成功');
             this.isKeyChange = true;
         }
     }
@@ -119,6 +121,7 @@ class SearchPage extends Component {
         const {onSearchCancel, search} = this.props;
         console.log("search1",search)
         if (search.showText === '搜索') {
+            searchHistoryDao.saveFavoriteItem(this.inputKey, JSON.stringify(this.inputKey));
             this.loadData();
         } else {
             onSearchCancel(this.searchToken);
@@ -158,6 +161,51 @@ class SearchPage extends Component {
             {rightButton}
         </View>
     }
+    onItemClick (data,index) {
+
+    }
+
+    historyBox (data,index) {
+        return (
+            <TouchableOpacity
+                onPress={()=>this.onItemClick(data,index)}
+            >
+                <View style={styles.historybox}>
+                    <Text>{data}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
+
+    historyView () {
+        const {theme} = this.params;
+        new FavoriteDao(FLAG_STORAGE.History).getAllItems()
+        .then(items => {
+            let views = [];
+            views.push(<View style={{height:40,marginTop:10,justifyContent:'center',marginLeft:16}}>
+                <Text style={{color:theme.themeColor}}>历史搜索</Text>
+            </View>)
+            for (let i = 0, len = items.length; i < len; i+=5) {
+                views.push(
+                    <View key={i}>
+                        <View style={styles.historyitem}>
+                            {this.historyBox(items[i].length>=4?`${items[i].substring(0,4)}...`: items[i], i)}
+                            {i + 1 < len ? this.historyBox(items[i + 1].length>=4?`${items[i + 1].substring(0,4)}...`: items[i + 1], i+1) : <View></View>}
+                            {i + 2 < len ? this.historyBox(items[i + 2].length>=4?`${items[i + 2].substring(0,4)}...`: items[i + 2], i+2) : <View></View>}
+                            {i + 3 < len ? this.historyBox(items[i + 3].length>=4?`${items[i + 3].substring(0,4)}...`: items[i + 3], i+3) : <View></View>}
+                            {i + 4 < len ? this.historyBox(items[i + 4].length>=4?`${items[i + 4].substring(0,4)}...`: items[i + 4], i+4) : <View></View>}
+                        </View>
+                    </View>
+                )
+            }
+            return {views}
+        })
+        .catch(e => {
+            console.log(e);
+        }) 
+
+    }
 
     render() {
         const {isLoading, projectModels, showBottomButton, hideLoadingMore} = this.props.search;
@@ -172,7 +220,10 @@ class SearchPage extends Component {
             style={theme.styles.navBar}
         />
         console.log("projectModels11",JSON.stringify(projectModels));
-        let listView = <FlatList
+
+
+
+        let listView = projectModels && projectModels.length>0?<FlatList
                 data={projectModels}
                 renderItem={data => this.renderItem(data)}
                 keyExtractor={item => "" + item.item.id}
@@ -206,13 +257,15 @@ class SearchPage extends Component {
                     this.canLoadMore = true; //fix 初始化时页调用onEndReached的问题
                     console.log('---onMomentumScrollBegin-----')
                 }}
-            />
+            /> : console.log('ddd',this.historyView())
 
         return <View style={{flex:1}}>
             {navigationBar}
             {this.renderNavBar()}
             {listView}
-            <Toast ref={toast => this.toast = toast}/>
+            <Toast ref={'toast'}
+                position={'center'}
+            />
         </View>
     }
 }
@@ -289,5 +342,23 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#999",
     },
+    historyitem: {
+        flexDirection:'row',
+        height:40,
+        alignItems: 'center'
+    },
+    historybox: {
+        marginLeft:10,
+        marginTop:10,
+        fontSize:13,
+        paddingLeft:8,
+        paddingRight:8,
+        paddingTop:4,
+        paddingBottom:4,
+        borderRadius:6,
+        backgroundColor:'#fff',
+        borderWidth:1,
+        borderColor:'#eee'
+    }
 });
 

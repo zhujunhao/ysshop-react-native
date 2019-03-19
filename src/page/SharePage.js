@@ -16,7 +16,6 @@ class SharePage extends Component {
                             <Image
                                 style={{height: 160}}
                                 resizeMode={('contain')}
-                                source={require('../../res/01.jpg')}
                             ></Image>
                         </Flex.Item>
                         <Flex.Item style={{height:100}}>
@@ -29,7 +28,6 @@ class SharePage extends Component {
                                 <View>
                                     <Image
                                         style={{width: 33, height: 33,borderRadius:6}}
-                                        source={require('../../res/yglogo.png')}
                                     ></Image>
                                 </View>
                                 <Text style={{textAlign:"center",fontSize:13,color:'#333',marginTop:5}}>微信好友</Text>
@@ -38,7 +36,6 @@ class SharePage extends Component {
                                 <View>
                                     <Image
                                         style={{width: 33, height: 33,borderRadius:6}}
-                                        source={require('../../res/yglogo.png')}
                                     ></Image>
                                 </View>
                                 <Text style={{textAlign:"center",fontSize:13,color:'#333',marginTop:5}}>微信朋友圈</Text>

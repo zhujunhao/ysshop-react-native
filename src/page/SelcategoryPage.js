@@ -165,8 +165,8 @@ class SelcategoryPage extends Component {
 
     render() {
         const {theme} = this.params;
-        let title = this.isRemoveKey ? '移除喜好' : '自定义喜好';
-        title =  '自定义喜好'
+        let title = this.isRemoveKey ? '移除分类' : '自定义分类';
+        title =  '自定义分类'
         let rightButtonTitle = this.isRemoveKey ? '移除' : '保存';
         let navigationBar = <NavigationBar
             title={title}

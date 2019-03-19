@@ -17,14 +17,12 @@ const CANCEL_TOKENS = [];
  * @param callBack
  * @returns {function(*=)}
  */
-export function onSearch(inputKey,pageSize,recommendKeys,callBack,token) {
+export function onSearch(inputKey,pageSize,token,favoriteDao,recommendKeys,callBack) {
     return dispatch => {
         dispatch({type: Types.SEARCH_REFRESH});
         fetch(genFetchUrl(inputKey)).then(response => {//如果任务取消，则不作任何处理
-            console.log("in8in")
             return hasCancel(token) ? null : response.json();
         }).then(responseData => {
-            console.log("888")
             if (hasCancel(token,true)) {//如果任务取消，则不做任何处理
                 console.log('user cancel');
                 return;
@@ -36,7 +34,7 @@ export function onSearch(inputKey,pageSize,recommendKeys,callBack,token) {
             }
             let items = responseData.items;
             console.log("items1",JSON.stringify(items))
-            handleData(Types.SEARCH_REFRESH_SUCCESS,dispatch,"",{data: items},pageSize,{
+            handleData(Types.SEARCH_REFRESH_SUCCESS,dispatch,"",{data: items},pageSize,favoriteDao,{
                 inputKey
             });
         }).catch(e => {
@@ -68,10 +66,10 @@ export function onSearch(inputKey,pageSize,recommendKeys,callBack,token) {
   * @param callBack 回调函数，可以通过回调函数来向调用页面通信；比如异常信息展示，没有更多等待
   * @returns {function(*)}
   */
- export function onLoadMoreSearch(pageIndex,pageSize,dataArray=[],callBack) {
+ export function onLoadMoreSearch(pageIndex,pageSize,dataArray=[],favoriteDao,callBack) {
      return dispatch => {
          setTimeout(() => {//模拟网络请求
-            if ((pageIndex-1) >= dataArray.length) {//已加载完全部数据
+            if ((pageIndex-1) * pageSize >= dataArray.length) {//已加载完全部数据
                 if (typeof callBack === 'function') {
                     callBack('别扯了没有了')
                 }
@@ -83,7 +81,7 @@ export function onSearch(inputKey,pageSize,recommendKeys,callBack,token) {
             } else {
                 //本次和载入的最大数量
                 let max = pageSize * pageIndex > dataArray.length ? dataArray.length : pageSize * pageIndex;
-                _projectModels(dataArray.slice(0,max),data => {
+                _projectModels(dataArray.slice(0,max),favoriteDao,data => {
                     dispatch({
                         type: Types.SEARCH_LOAD_MORE_SUCCESS,
                         pageIndex,
@@ -109,7 +107,6 @@ export function onSearch(inputKey,pageSize,recommendKeys,callBack,token) {
    * @returns {boolean}
    */
   function hasCancel(token,isRemove) {
-      console.log("op")
       if (CANCEL_TOKENS.includes(token)) {
         isRemove && ArrayUtil.remove(CANCEL_TOKENS, token);
           return true;

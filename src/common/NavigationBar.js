@@ -67,7 +67,7 @@ export default class NavigationBar extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#79d7da',
+        backgroundColor: '#E91E63',
     },
     navBar: {
         flexDirection: 'row',
@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     statusBar: {
-        backgroundColor:"#79d7da",
-        height: Platform.OS === 'ios' ? STATUS_BAR_HEIGHT:0,
+        height: Platform.OS === 'ios' ? STATUS_BAR_HEIGHT:20,
     },
 })

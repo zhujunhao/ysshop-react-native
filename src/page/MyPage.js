@@ -101,8 +101,6 @@ class MyPage extends Component {
                 <View style={GlobalStyles.line}/>
                 {this.getItem(MORE_MENU.AboutUs)}
                 <View style={GlobalStyles.line}/>
-                {this.getItem(MORE_MENU.ClearInfo)}
-                <View style={GlobalStyles.line}/>
                 {this.getItem(MORE_MENU.CodePush)}
                 <View style={GlobalStyles.line}/>
             </ScrollView>

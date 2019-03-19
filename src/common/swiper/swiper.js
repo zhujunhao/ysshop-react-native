@@ -20,7 +20,7 @@ class SwiperArr extends Component {
                   <Image
                       style={{height: 160}}
                       resizeMode={('contain')}
-                      source={require('../../../res/01.jpg')}
+                      source={{uri: 'http://img.haodanku.com/FmPL7ZRZK8_9JvhBLEN-fQaMtq_3'}}
                   ></Image>
                 </View>
                 <View
@@ -29,7 +29,7 @@ class SwiperArr extends Component {
                     <Image
                       style={{height: 160}}
                       resizeMode={('contain')}
-                      source={require('../../../res/02.png')}
+                      source={{uri: 'http://img.haodanku.com/FmPL7ZRZK8_9JvhBLEN-fQaMtq_3'}}
                   ></Image>
                 </View>
                 <View
@@ -40,7 +40,7 @@ class SwiperArr extends Component {
                     <Image
                       style={{height: 160}}
                       resizeMode={('contain')}
-                      source={require('../../../res/03.jpg')}
+                      source={{uri: 'http://img.haodanku.com/Fo5poa05S1lZSmRXYMBy7KCOoi8s'}}
                   ></Image>
                 </View>
                 <View
@@ -49,7 +49,7 @@ class SwiperArr extends Component {
                     <Image
                       style={{height: 160}}
                       resizeMode={('contain')}
-                      source={require('../../../res/04.jpg')}
+                      source={{uri: 'http://img.haodanku.com/Ftgn6CSOnGrfJAfwIv9lvHvdAcQe'}}
                     ></Image>
                 </View>
                 <View
@@ -59,7 +59,7 @@ class SwiperArr extends Component {
                     <Image
                       style={{height: 160}}
                       resizeMode={('contain')}
-                      source={require('../../../res/05.jpeg')}
+                      source={{uri: 'http://img.haodanku.com/Fozo62JBx7cnix4WfneZ5LXGs5Hg'}}
                     ></Image>
                 </View>
                 </Carousel>

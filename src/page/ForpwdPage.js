@@ -40,7 +40,7 @@ class ForgetPwd extends Component {
     render(){
         return(
             <View style={{flex:1}}>
-                <NavigationBar leftButton={this.leftButtonPart(require('../../res/common/return.png'))} title={'修改登录密码'}/>
+                <NavigationBar title={'修改登录密码'}/>
                 <ScrollView style={styles.container}>
                     <WingBlank>
                         <Flex direction={"column"} justify={"center"}>

@@ -54,8 +54,9 @@ class RecommendPage extends Component {
                   upperCaseLabel: false,//是否使标签大写，默认为true
                   scrollEnabled: true,//是否支持选项卡滚动，默认false
                   style: {
+                      paddingTop: 25,
                       backgroundColor: '#fff',//TabBar 的背景颜色
-                      height: 39//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
+                      height: 59//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
                   },
                   indicatorStyle: {
                       backgroundColor:theme.themeColor,
@@ -124,7 +125,6 @@ class RecommendTab extends Component {
     loadData(loadMore,refreshFavorite) {
         const {onRefreshRecommend, onLoadMoreRecommend, onFlushRecommendFavorite} = this.props;
         const store = this._store();
-        console.log("storeName",this.storeName);
         const url = this.genFetchUrl(this.storeName);
         if (loadMore) {
             onLoadMoreRecommend(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callback => {
@@ -153,7 +153,6 @@ class RecommendTab extends Component {
                 hideLoadingMore: true,//默认隐藏加载更多
             }
         }
-        console.log("store",JSON.stringify(store))
         return store;
     }
 
@@ -162,7 +161,6 @@ class RecommendTab extends Component {
     }
 
     renderItem(data) {
-        console.log("itm",JSON.stringify(data))
         const {item} = data;
         const {theme} = this.props;
         return <RecommendItem
@@ -196,6 +194,7 @@ class RecommendTab extends Component {
         const {theme} = this.props;
         let searchPart = <TouchableOpacity
             onPress={()=>this.onSearch("SearchPage")}
+            activeOpacity={1}
         >
             <View style={{height:50,justifyContent:"center",alignItems:'center'}}>
                 <View style={{flexDirection:'row',alignItems:"center",justifyContent:'flex-start' ,width:300,height:32,backgroundColor:'#eee',borderRadius:18}}>
@@ -274,7 +273,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     tabStyle: {
-        width:100,
+        width:50,
     },
     indicatorContainer: {
         alignItems: "center"

@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 
-export const FLAG_STORAGE = { Collection:'Collection',Like:'Like',Concern:'Concern' };
+export const FLAG_STORAGE = { Collection:'Collection',History:'History'};
 
 export default class DataStore {
     /**
@@ -62,9 +62,11 @@ export default class DataStore {
      */
     fetchNetData(url, flag) {
         return new Promise((resolve,reject) => {
+            console.log("url",url)
             fetch(url)
                 .then((response) => {
                     if (response.ok) {
+                        console.log("ininin")
                         return response.json();
                     }
                     throw new Error('Network response was not ok.')
@@ -74,7 +76,7 @@ export default class DataStore {
                     resolve(responseData);
                 })
                 .catch((error) => {
-                    reject(error);
+                    reject("1111",error);
                 })
         })
     }

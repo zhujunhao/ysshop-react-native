@@ -23,7 +23,7 @@ class WelcomePage extends Component {
                 <Image
                     style={{flex:1}}
                     resizeMode={('repeat')}
-                    source={require('../../res/wel.png')}
+                    source={require('../../res/1080x1920.png')}
                 ></Image>
             </View>
         );

@@ -18,6 +18,7 @@ export default class ViewUtil {
             <TouchableOpacity
                 onPress={callBack}
                 style={styles.setting_item_container}
+                activeOpacity={1}
             >
                 <View style={{alignItems:'center',flexDirection: 'row'}}>
                     {Icons && icon ?
@@ -62,8 +63,10 @@ export default class ViewUtil {
      */
     static getLeftBackButton(callBack) {
         return <TouchableOpacity
-                style={{padding: 8,paddingLeft:12}}
-                onPress={callBack}>
+                    style={{padding: 8,paddingLeft:12}}
+                    onPress={callBack}
+                    activeOpacity={1}
+                >
                 <AntDesign
                     name={'left'}
                     size={18}
@@ -79,8 +82,10 @@ export default class ViewUtil {
      */
     static getThemeButton(callBack) {
         return <TouchableOpacity
-                style={{padding: 8,paddingLeft:12,marginRight:10}}
-                onPress={callBack}>
+                    style={{padding: 8,paddingLeft:12,marginRight:10}}
+                    onPress={callBack}
+                    activeOpacity={1}
+                >
                 <AntDesign
                     name={'skin'}
                     size={18}
@@ -99,6 +104,7 @@ export default class ViewUtil {
         return <TouchableOpacity
             style={{alignItems:"center"}}
             onPress={callBack}
+            activeOpacity={1}
         >
             <Text style={{fontSize:18,color: '#fff',marginRight:10}}>{title}</Text>
         </TouchableOpacity>
@@ -113,6 +119,7 @@ export default class ViewUtil {
         return <TouchableOpacity
             underlayColor={'transparent'}
             onPress={callBack}
+            activeOpacity={1}
         >
             <AntDesign
                 name={'export'}
@@ -131,6 +138,7 @@ export default class ViewUtil {
         return <TouchableOpacity
             underlayColor={'transparent'}
             onPress={callBack}
+            activeOpacity={1}
         >
             <AntDesign
                 name={'setting'}

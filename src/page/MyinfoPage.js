@@ -38,7 +38,7 @@ class MyinfoPage extends Component {
     render(){
         return(
             <View style={{flex:1}}>
-                <NavigationBar leftButton={this.leftButtonPart(require('../../res/common/return.png'))} title={'个人资料'}/>
+                <NavigationBar title={'个人资料'}/>
                 <ScrollView style={styles.container}>
                     <WingBlank>
                         <Flex direction={"column"} justify={"center"}>

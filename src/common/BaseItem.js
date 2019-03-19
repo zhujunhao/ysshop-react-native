@@ -57,6 +57,7 @@ export default class BaseItem extends Component {
         const {theme} = this.props;
         return <TouchableOpacity
             style={{padding: 6}}
+            activeOpacity={1}
             underlayColor='transparent'
             onPress={() => this.onPressFavorite()}>
             <AntDesign

@@ -38,12 +38,11 @@ class Aboutus extends Component {
     render(){
         return(
             <View style={{flex:1}}>
-                <NavigationBar leftButton={this.leftButtonPart(require('../../res/common/return.png'))} title={'关于我们'}/>
+                <NavigationBar  title={'关于我们'}/>
                 <ScrollView style={styles.container}>
                     <View style={{alignItems:"center",marginTop:60}}>
                         <Image
                             style={{width:50,height:50,borderRadius:6}}
-                            source={require('../../res/yglogo.png')}
                         ></Image>
                     </View>
                     <Text
