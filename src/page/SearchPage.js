@@ -130,7 +130,7 @@ class SearchPage extends Component {
 
     renderNavBar() {
         const {showText, inputKey} = this.props.search;
-        const placeholder = inputKey || "请输入您想购买的商品";
+        const placeholder = inputKey || "请输入您想购买的商品名称";
         let inputView = <TextInput
             ref="input"
             placeholder={placeholder}
@@ -226,7 +226,7 @@ class SearchPage extends Component {
         let listView = projectModels && projectModels.length>0?<FlatList
                 data={projectModels}
                 renderItem={data => this.renderItem(data)}
-                keyExtractor={item => "" + item.item.id}
+                keyExtractor={item => "" + item.item.goodsNum}
                 contentInset={
                     {
                         bottom: 45

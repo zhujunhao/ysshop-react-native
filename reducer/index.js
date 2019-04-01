@@ -4,6 +4,8 @@ import search from './SearchReducer';
 import category from './category';
 import favorite from './favorite'; 
 import theme from './Theme';
+import ydr from './Ydr';
+import relative from './relative';
 import {rootCom, RootNavigator} from '../src/navigators/AppNavigator';
 
 //1.指定默认state
@@ -28,6 +30,8 @@ const index = combineReducers({
     search : search,
     category : category,
     favorite : favorite,
-    theme : theme
+    theme : theme,
+    ydr : ydr,
+    relative : relative
 })
 export default index;

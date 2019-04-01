@@ -8,7 +8,7 @@ export default class RecommendItem extends BaseItem {
         const {projectModel,theme} = this.props;
         console.log("popo125",JSON.stringify(this.props))
         const {item} = projectModel;
-        if (!item || !item.owner) return null;
+        if (!item || !item.goodsNum) return null;
         return (
             <TouchableOpacity
                 onPress={()=>this.onItemClick()}
@@ -17,11 +17,11 @@ export default class RecommendItem extends BaseItem {
                 <View style={styles.cell_container}>
                     <View style={styles.ImagePart}>
                         <Image style={styles.picPart}
-                            source={{uri: 'https://img.alicdn.com/imgextra/i2/1756135147/O1CN0177ogWg1ntN27Q1Iof_!!1756135147.jpg_310x310.jpg'}}
+                            source={{uri: item.picGoods}}
                         />
                     </View>
                     <Text style={styles.title} numberOfLines={1}>
-                        {item.full_name}
+                        {item.titGoods}
                     </Text>
                     <View style={styles.row}>
                         <View style={{flexDirection:'row',width:60,height:16,borderColor:theme.themeColor,borderWidth:1,borderRadius:4}}>
@@ -30,15 +30,15 @@ export default class RecommendItem extends BaseItem {
                             </View>
                             <View style={{height:14,width:1,backgroundColor:theme.themeColor}}></View>
                             <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                                <Text style={{color:theme.themeColor,fontSize:10}}>882元</Text>
+                                <Text style={{color:theme.themeColor,fontSize:10}}>{`${item.CouponNum}元`}</Text>
                             </View>
                         </View>
-                        <Text style={{fontSize:10}}>已售：3.33万</Text>
+                        <Text style={{fontSize:10}}>{`月销量${item.monthNum}`}</Text>
                     </View>
                     <View style={styles.row}>
                         <View style={{height:30,flexDirection: 'row',alignItems:'center'}}>
                             <Text style={{fontSize:12}}>券后￥:</Text>
-                            <Text style={{fontSize:14,fontWeight:'bold',color:'#666'}}>99.00</Text>
+                            <Text style={{fontSize:14,fontWeight:'bold',color:'#666'}}>{item.qhjGoods}</Text>
                         </View>
                         {this._favoriteIcon()}
                     </View>

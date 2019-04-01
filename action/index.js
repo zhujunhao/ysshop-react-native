@@ -3,7 +3,9 @@ import {onRefreshRecommend, onLoadMoreRecommend, onFlushRecommendFavorite} from 
 import {onSearch,onLoadMoreSearch,onSearchCancel } from './search';
 import { onLoadCategory } from './category';
 import { onLoadFavoriteData } from './favorite';
+import { onRefreshYdr,onLoadMoreYdr,onFlushYdrFavorite } from './ydr'
 import { onThemeChange, onShowCustomThemeView, onThemeInit } from './theme';
+import { onRefreshRelative, onLoadMoreRelative, onFlushRelativeFavorite } from './relative';
 
 export default {
     onRefreshRecommend,
@@ -16,5 +18,11 @@ export default {
     onLoadFavoriteData,
     onThemeChange,
     onShowCustomThemeView,
-    onThemeInit
+    onThemeInit,
+    onRefreshYdr,
+    onLoadMoreYdr,
+    onFlushYdrFavorite,
+    onRefreshRelative,
+    onLoadMoreRelative,
+    onFlushRelativeFavorite
 }

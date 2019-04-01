@@ -11,8 +11,6 @@ import FavoriteUtil from '../util/FavoriteUtil';
 import BackPressComponent from '../common/BackPressComponent';
 import EventBus from "react-native-event-bus";
 import EventTypes from "../util/EventTypes";
-import NavigatorBar from '../common/NavigationBar';
-import ViewUtil from '../util/ViewUtil';
 import config from '../../res/data/config';
 import AboutCommon from '../page/about/AboutCommon';
 
@@ -38,7 +36,7 @@ class FavoritePage extends Component {
         this.backPress.componentDidMount();
         this.loadData(true);
         EventBus.getInstance().addListener(EventTypes.bottom_tab_select,this.listener = data => {
-            if(data.to === 1) {
+            if(data.to === 2) {
                 this.loadData(false);
             }
         })
@@ -67,6 +65,7 @@ class FavoritePage extends Component {
      * 获取当前页面相关数据
      */
     _store(){
+        console.log("uuupro",JSON.stringify(this.props))
         const {favorite} = this.props;
         let store = favorite[this.storeName];
         if (!store) {
@@ -87,7 +86,6 @@ class FavoritePage extends Component {
     renderItem(data) {
         const {theme} = this.props;
         const item = data.item;
-        console.log("opoppopop",JSON.stringify(data))
         return <FavouriteItem
             theme={theme}
             projectModel={item}
@@ -112,7 +110,7 @@ class FavoritePage extends Component {
                             <FlatList
                                 data={store.projectModels}
                                 renderItem={data => this.renderItem(data)}
-                                keyExtractor={item => "" + (item.item.id || item.item.fullName)}
+                                keyExtractor={item => "" + (item.item.goodsNum)}
                                 refreshControl={
                                     <RefreshControl
                                         title={'loading'}

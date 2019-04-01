@@ -8,15 +8,19 @@ import Utils from "../src/util/Utils";
 
  export function handleData(actionType,dispatch,storeName,data,pageSize,favoriteDao,params) {
      let fixItems = [];
+     console.log('nowdara',JSON.stringify(data))
      if ( data && data.data ) {
-         if (Array.isArray(data.data)) {
+         if (Array.isArray(data.data.typeLists)) {
+             fixItems = data.data.typeLists;
+         } else if (Array.isArray(data.data)) {//搜索
              fixItems = data.data;
-         } else if (Array.isArray(data.data.items)) {
-             fixItems = data.data.items;
+         } else if (Array.isArray(data.data.data.relativeLists)) {
+            fixItems = data.data.data.relativeLists;
          }
      }
      //第一次加载的数据
      let showItems = pageSize > fixItems.length ? fixItems : fixItems.slice(0,pageSize)
+     console.log('showItems',JSON.stringify(showItems))
      _projectModels(showItems,favoriteDao,projectModels => {
          dispatch({
              type: actionType,
@@ -46,6 +50,7 @@ import Utils from "../src/util/Utils";
      for (let i =0,len = showItems.length;i<len;i++) {
          projectModels.push(new ProjectModel(showItems[i],Utils.checkFavorite(showItems[i], keys)));
      }
+     console.log('projectModels',JSON.stringify(projectModels))
      doCallBack(callback,projectModels);
  }
 

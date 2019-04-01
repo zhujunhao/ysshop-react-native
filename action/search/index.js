@@ -3,8 +3,7 @@ import {_projectModels,doCallBack,handleData } from '../ActionUtil';
 import ArrayUtil from '../../src/util/ArrayUtil';
 import Utils from '../../src/util/Utils';
 
-const API_URL = 'https://api.github.com/search/repositories?q=';
-const QUERY_STR = '&sort=stars';
+const SEARCH_URL = 'http://39.108.154.18:3000/api/v0/lists/$';
 const CANCEL_TOKENS = [];
 
 /**
@@ -27,13 +26,13 @@ export function onSearch(inputKey,pageSize,token,favoriteDao,recommendKeys,callB
                 console.log('user cancel');
                 return;
             }
-            if(!responseData || !responseData.items || responseData.items.length === 0) {
+            console.log("responseData",JSON.stringify(responseData))
+            if(!responseData || !responseData.textLists || responseData.textLists.length === 0) {
                 dispatch({type: Types.SEARCH_FAIL,message: `没找到关于${inputKey}的内容`})
                 doCallBack(callBack,`没找到关于${inputKey}的项目`);
                 return;
             }
-            let items = responseData.items;
-            console.log("items1",JSON.stringify(items))
+            let items = responseData.textLists;
             handleData(Types.SEARCH_REFRESH_SUCCESS,dispatch,"",{data: items},pageSize,favoriteDao,{
                 inputKey
             });
@@ -97,7 +96,7 @@ export function onSearch(inputKey,pageSize,token,favoriteDao,recommendKeys,callB
 
 
   function genFetchUrl(key) {
-      return API_URL + key + QUERY_STR;
+      return SEARCH_URL + key;
   }
 
   /**

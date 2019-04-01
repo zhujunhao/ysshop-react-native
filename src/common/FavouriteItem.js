@@ -7,7 +7,7 @@ export default class FavouriteItem extends BaseItem {
         const {projectModel,theme} = this.props;
         console.log("ssprops",JSON.stringify(this.props))
         const {item} = projectModel;
-        if (!item || !item.owner) return null;
+        if (!item || !item.goodsNum) return null;
         return (
             <TouchableOpacity
                 onPress={()=>this.onItemClick()}
@@ -16,13 +16,13 @@ export default class FavouriteItem extends BaseItem {
             >
                 <View style={styles.cell_container}>
                     <View style={{height: 100, width: 100,borderRadius:6,borderWidth:1,borderColor:'#eee'}}>
-                        <Image style={{height: 100, width: 100,borderRadius:6}}
-                                source={{uri: 'https://img.alicdn.com/imgextra/i2/1756135147/O1CN0177ogWg1ntN27Q1Iof_!!1756135147.jpg_310x310.jpg'}}
+                        <Image style={{height: 98, width: 98,borderRadius:6}}
+                                source={{uri: item.picGoods}}
                         />
                     </View>
                     <View style={{flex:1,marginLeft:10,flexDirection:'column'}}>
                         <Text style={styles.title} numberOfLines={2}>
-                            {item.full_name}
+                            {item.titGoods}
                         </Text>
                         <View style={styles.row}>
                             <View style={{flexDirection:'row',width:60,height:18,borderColor:theme.themeColor,borderWidth:1,borderRadius:4}}>
@@ -31,19 +31,18 @@ export default class FavouriteItem extends BaseItem {
                                 </View>
                                 <View style={{height:16,width:1,backgroundColor:theme.themeColor}}></View>
                                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                                    <Text style={{color:theme.themeColor,fontSize:12}}>842元</Text>
+                                    <Text style={{color:theme.themeColor,fontSize:12}}>{`${item.CouponNum}元`}</Text>
                                 </View>
                             </View>
-                            <Text style={{fontSize:12}}>已售：3.33万</Text>
+                            <Text style={{fontSize:12}}>{`月销量${item.monthNum}`}</Text>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.row}>
                                 <Text style={{fontSize:14}}>券后￥:</Text>
-                                <Text style={{fontSize:16,fontWeight:'bold',color:'#666'}}>99.00</Text>
+                                <Text style={{fontSize:16,fontWeight:'bold',color:'#666'}}>{item.qhjGoods}</Text>
                             </View>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                <Text style={{fontSize:12,textDecorationLine:'line-through',color:'#999'}}>￥:</Text>
-                                <Text style={{fontSize:12,textDecorationLine:'line-through',color:'#999'}}>{item.stargazers_count}</Text>
+                                <Text style={{fontSize:10,textDecorationLine:'line-through',color:'#999'}}>{item.oriPrice}</Text>
                             </View>
                             {this._favoriteIcon()}
                         </View>

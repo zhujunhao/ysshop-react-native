@@ -20,7 +20,7 @@ class SwiperArr extends Component {
                   <Image
                       style={{height: 160}}
                       resizeMode={('contain')}
-                      source={{uri: 'http://img.haodanku.com/FmPL7ZRZK8_9JvhBLEN-fQaMtq_3'}}
+                      source={{uri: 'https://img.alicdn.com/imgextra/i2/1756135147/O1CN0177ogWg1ntN27Q1Iof_!!1756135147.jpg_310x310.jpg'}}
                   ></Image>
                 </View>
                 <View
@@ -29,7 +29,7 @@ class SwiperArr extends Component {
                     <Image
                       style={{height: 160}}
                       resizeMode={('contain')}
-                      source={{uri: 'http://img.haodanku.com/FmPL7ZRZK8_9JvhBLEN-fQaMtq_3'}}
+                      source={{uri: 'https://img.alicdn.com/imgextra/i2/1756135147/O1CN0177ogWg1ntN27Q1Iof_!!1756135147.jpg_310x310.jpg'}}
                   ></Image>
                 </View>
                 <View
@@ -40,7 +40,7 @@ class SwiperArr extends Component {
                     <Image
                       style={{height: 160}}
                       resizeMode={('contain')}
-                      source={{uri: 'http://img.haodanku.com/Fo5poa05S1lZSmRXYMBy7KCOoi8s'}}
+                      source={{uri: 'https://img.alicdn.com/imgextra/i2/1756135147/O1CN0177ogWg1ntN27Q1Iof_!!1756135147.jpg_310x310.jpg'}}
                   ></Image>
                 </View>
                 <View
@@ -49,7 +49,7 @@ class SwiperArr extends Component {
                     <Image
                       style={{height: 160}}
                       resizeMode={('contain')}
-                      source={{uri: 'http://img.haodanku.com/Ftgn6CSOnGrfJAfwIv9lvHvdAcQe'}}
+                      source={{uri: 'https://img.alicdn.com/imgextra/i2/1756135147/O1CN0177ogWg1ntN27Q1Iof_!!1756135147.jpg_310x310.jpg'}}
                     ></Image>
                 </View>
                 <View
@@ -59,7 +59,7 @@ class SwiperArr extends Component {
                     <Image
                       style={{height: 160}}
                       resizeMode={('contain')}
-                      source={{uri: 'http://img.haodanku.com/Fozo62JBx7cnix4WfneZ5LXGs5Hg'}}
+                      source={{uri: 'https://img.alicdn.com/imgextra/i2/1756135147/O1CN0177ogWg1ntN27Q1Iof_!!1756135147.jpg_310x310.jpg'}}
                     ></Image>
                 </View>
                 </Carousel>

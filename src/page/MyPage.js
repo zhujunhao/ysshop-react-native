@@ -26,10 +26,10 @@ class MyPage extends Component {
                 RouteName = 'FavoritePage';
                 break;
             case MORE_MENU.ChangeMobile:
-                RouteName = 'Changemob';
+                RouteName = 'ChangemobPage';
                 break;
             case MORE_MENU.ChangePwd:
-                RouteName = 'ForgetPwd';
+                RouteName = 'ForpwdPage';
                 break;
             case MORE_MENU.AboutUs:
                 RouteName = 'AboutPage';
@@ -100,8 +100,6 @@ class MyPage extends Component {
                 {this.getItem(MORE_MENU.Sortcategory)}
                 <View style={GlobalStyles.line}/>
                 {this.getItem(MORE_MENU.AboutUs)}
-                <View style={GlobalStyles.line}/>
-                {this.getItem(MORE_MENU.CodePush)}
                 <View style={GlobalStyles.line}/>
             </ScrollView>
         </View>

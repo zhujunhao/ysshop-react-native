@@ -3,11 +3,11 @@ import { createStackNavigator,createSwitchNavigator, createAppContainer } from '
 import WelcomePage from '../page/WelcomePage'
 import SearchPage from '../page/SearchPage';
 import HomePage from '../page/HomePage';
-import ForgetPwd from '../page/ForpwdPage';
+import ForpwdPage from '../page/ForpwdPage';
 import LoginPage from '../page/LoginPage';
 import RegisterPage from '../page/RegisterPage';
 import MyPage from '../page/MyPage';
-import Changemob from '../page/ChangemobPage';
+import ChangemobPage from '../page/ChangemobPage';
 import MyinfoPage from '../page/MyinfoPage';
 import Aboutus from '../page/Aboutus';
 import AboutMePage from '../page/about/AboutMePage';
@@ -18,6 +18,7 @@ import SelcategoryPage from '../page/SelcategoryPage';
 import CodePushPage from '../page/CodePushPage';
 import WebviewDeatil from '../page/WebviewDeatil';
 import SortcategoryPage from '../page/SortcategoryPage';
+import YdrPage from '../page/YdrPage';
 import { connect } from 'react-redux';
 import {createReactNavigationReduxMiddleware, reduxifyNavigator} from 'react-navigation-redux-helpers';
 
@@ -45,8 +46,8 @@ const MainNavigator = createStackNavigator({
         header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
       } 
     },
-    ForgetPwd: { 
-      screen: ForgetPwd,
+    ForpwdPage: { 
+      screen: ForpwdPage,
       navigationOptions: {
         header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
       }  
@@ -63,8 +64,8 @@ const MainNavigator = createStackNavigator({
         header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
       } 
     },
-    Changemob: {
-      screen: Changemob,
+    ChangemobPage: {
+      screen: ChangemobPage,
       navigationOptions: {
         header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
       } 
@@ -134,7 +135,25 @@ const MainNavigator = createStackNavigator({
       navigationOptions: {
         header: null
       }     
-    }
+    },
+    YdrPage: {
+      screen:YdrPage,
+      navigationOptions: {
+        header: null
+      }     
+    },
+    ChangemobPage: {
+      screen:ChangemobPage,
+      navigationOptions: {
+        header: null
+      }     
+    },
+    ForpwdPage: {
+      screen:ForpwdPage,
+      navigationOptions: {
+        header: null
+      }     
+    },
   }, {
     defaultNavigationOptions: {
       header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar

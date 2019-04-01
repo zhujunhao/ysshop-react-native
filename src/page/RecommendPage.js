@@ -13,9 +13,9 @@ import { FLAG_STORAGE } from '../ask/DataStore';
 import FavoriteUtil from '../util/FavoriteUtil';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FavoriteDao from '../ask/FavoriteDao';
+import SwiperArr from '../common/swiper/swiper';
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.Collection);
-const URL = 'https://api.github.com/search/repositories?q=';
-const QUERY_STR = '&sort=stars';
+const URL = 'http://39.108.154.18:3000/api/v0/lists';
 
 class RecommendPage extends Component {
     constructor(props) {
@@ -33,7 +33,7 @@ class RecommendPage extends Component {
         categorys.forEach((item,index) => {
             if (item.checked) {
                 tabs[`tab${index}`] = {
-                    screen: props => <RecommendTabPage {...props} tabLabel={item.name} theme={theme}/>,
+                    screen: props => <RecommendTabPage {...props} tabLabel={item.name} path={item.path} theme={theme}/>,
                     navigationOptions: {
                       title: item.name
                     }
@@ -96,8 +96,10 @@ const pageSize = 10;//设为常量，防止修改
 class RecommendTab extends Component {
     constructor(props) {
         super(props);
-        const {tabLabel} = this.props;
-        this.storeName = tabLabel;
+        console.log("rethisprops",JSON.stringify(this.props))
+        const {tabLabel,path} = this.props;
+        console.log("tabLabel",JSON.stringify(tabLabel))
+        this.storeName = path;
         this.isFavoriteChanged = false;
     }
 
@@ -143,6 +145,7 @@ class RecommendTab extends Component {
      * @private
      */
     _store() {
+        console.log("store",JSON.stringify(this.props))
         const {recommend} = this.props;
         let store = recommend[this.storeName];
         if (!store) {
@@ -157,7 +160,7 @@ class RecommendTab extends Component {
     }
 
     genFetchUrl(key) {
-        return URL + key + QUERY_STR;
+        return URL + key;
     }
 
     renderItem(data) {
@@ -177,6 +180,24 @@ class RecommendTab extends Component {
             onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite)}
         />
         
+    }
+    headerPart() {
+        return (
+            <View style={{flex:1,padding:5}}>
+                <SwiperArr></SwiperArr>
+                <View style={{flex:1,height:88,flexDirection:'row'}}>
+                    <View style={{flex:1,backgroundColor:'#ff4800',borderColor:'#eee',borderWidth:1}}>
+                        <Text>达人快抢</Text>
+                    </View>
+                    <View style={{flex:1,backgroundColor:'#999',borderColor:'#eee',borderWidth:1}}>
+                        <Text>实时榜单</Text>
+                    </View>
+                </View>
+                <View style={{flex:1,height:88,backgroundColor:'#ff4800',borderColor:'#eee',borderWidth:1,marginTop:8}}>
+                    <Text>品牌专区</Text>
+                </View>
+            </View>
+        )
     }
 
     genIndicator() {
@@ -220,7 +241,7 @@ class RecommendTab extends Component {
                     data={store.projectModels}
                     numColumns={2}
                     renderItem={data => this.renderItem(data)}
-                    keyExtractor={item => "" + item.item.id}
+                    keyExtractor={item => "" + item.item.goodsNum}
                     refreshControl = {
                         <RefreshControl
                             title={'loading'}

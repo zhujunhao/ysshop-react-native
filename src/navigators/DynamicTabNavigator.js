@@ -3,6 +3,7 @@ import { createBottomTabNavigator,createAppContainer } from 'react-navigation';
 import { connect } from 'react-redux';
 import RecommendPage from '../page/RecommendPage';
 import MyPage from '../page/MyPage';
+import YdrPage from '../page/YdrPage';
 import SharePage from '../page/SharePage';
 import FavoritePage from '../page/FavoritePage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -17,12 +18,25 @@ const TABS = {//页面路由配置
             tabBarLabel: '推荐',
             tabBarIcon: ({tintColor, focused}) => (
                 <AntDesign
-                    name={'flag'}
+                    name={'home'}
                     size={22}
                     style={{color: tintColor}}
                 />
             ),
         }
+    },
+    YdrPage: {
+        screen: YdrPage,
+        navigationOptions: {
+            tabBarLabel: '悦达人',
+            tabBarIcon: ({tintColor, focused}) => (
+                <AntDesign
+                    name={'bells'}
+                    size={22}
+                    style={{color: tintColor}}
+                />
+            ),
+        }         
     },
     FavoritePage: {
         screen: FavoritePage,
@@ -36,19 +50,6 @@ const TABS = {//页面路由配置
                 />
             ),
         }       
-    },
-    SharePage: {
-        screen: SharePage,
-        navigationOptions: {
-            tabBarLabel: '分享',
-            tabBarIcon: ({tintColor, focused}) => (
-                <AntDesign
-                    name={'sharealt'}
-                    size={22}
-                    style={{color: tintColor}}
-                />
-            ),
-        }         
     },
     MyPage: {
         screen: MyPage,

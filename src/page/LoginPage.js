@@ -1,8 +1,12 @@
 import React,{ Component } from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet,ScrollView, Text, View,Image,TouchableOpacity } from 'react-native';
 import { WhiteSpace,WingBlank,Flex,InputItem,List } from '@ant-design/react-native';
+import BackPressComponent from "../common/BackPressComponent";
 import NavigatorUtil from '../navigators/NavigatorUtil';
-import NavigationBar from '../common/NavigationBar';
+import NavigatorBar from '../common/NavigationBar';
+import ViewUtil from '../util/ViewUtil';
+import actions from "../../action";
 
 
 class LoginPage extends Component {
@@ -12,27 +16,27 @@ class LoginPage extends Component {
             uesrName: '',
             passwordText: ''
         }
+        this.backPress = new BackPressComponent({backPress: ()=> this.onBackPress()});
     }
 
-    static navigationOptions = {
-        header:null
-    };
 
-    leftButtonPart (imageRoad) {
-        return (
-            <TouchableOpacity
-                onPress = {()=>this.clickPage('back')}
-            >
-                <Image style={{width:25,height:25,margin:10}}
-                    source={imageRoad}
-                ></Image>
-            </TouchableOpacity>
-        )
+    onBackPress() {
+        NavigatorUtil.goBack(this.props.navigation);
+        return true;
     }
+
+    componentDidMount() {
+        this.backPress.componentDidMount();
+    }
+
+    componentWillUnmout() {
+        this.backPress.componentWillUnmout();
+    }
+
 
     clickPage(pageName) {
         if (pageName == "忘记密码") {
-            NavigatorUtil.goPage(this.props,'ForgetPwd')
+            NavigatorUtil.goPage(this.props,'ForpwdPage')
         } else if (pageName == "新用户注册") {
             NavigatorUtil.goPage(this.props,'RegisterPage')
         } else if (pageName == "back") {
@@ -41,9 +45,15 @@ class LoginPage extends Component {
     }
 
     render(){
+        const {theme} = this.props;
+        let navigatorBar = <NavigatorBar
+                                leftButton = {ViewUtil.getLeftBackButton( () => NavigatorUtil.goBack(this.props.navigation) )}
+                                title = {'登录'}
+                                style={theme.styles.navBar}
+                            />
         return (
             <ScrollView style={styles.container}>
-                <NavigationBar title={'登录'}/>
+                {navigatorBar}
                 <WingBlank>
                     <Flex direction={"column"}>
                         <Flex justify={"center"} style={{width:300,height:150}}>
@@ -62,7 +72,7 @@ class LoginPage extends Component {
                                             uesrName: value,
                                         });
                                     }}
-                                    placeholder="请输入账号名/手机号码"
+                                    placeholder="请输入手机号码"
                                 />
                                 <WhiteSpace></WhiteSpace>
                                 <Flex direction={"row"}>
@@ -84,12 +94,12 @@ class LoginPage extends Component {
                                 </Flex>
                                 <WhiteSpace></WhiteSpace>
                             </List>
-                            <View style={{width:300,height:40,borderRadius:20,backgroundColor:'#79d7da',marginTop:20}}>
+                            <View style={{width:300,height:40,borderRadius:20,backgroundColor:theme.themeColor,marginTop:20}}>
                                 <Text style={{lineHeight:40,color:'#fff',fontSize:13,textAlign:'center'}}>登录</Text>
                             </View>
                         </View>
                         <View style={{width:300,height:30}}>
-                            <Text style={{lineHeight:30,color:'#79d7da',fontSize:13,textAlign:'right',marginRight:10}}
+                            <Text style={{lineHeight:30,color:theme.themeColor,fontSize:13,textAlign:'right',marginRight:10}}
                                 onPress={()=>this.clickPage('新用户注册')}
                             >新用户注册</Text>
                         </View>
@@ -104,7 +114,7 @@ class LoginPage extends Component {
                                 resizeMode={('contain')}
                                 style={{width: 26, height: 26}}
                             ></Image>
-                            <Text style={{fontSize:10,color:'#666',marginTop:3}}>微信登录</Text>
+                            <Text style={{fontSize:10,color:'#666',marginTop:3}}></Text>
                         </Flex>
                     </Flex>
                 </WingBlank>
@@ -115,7 +125,15 @@ class LoginPage extends Component {
     }
 }
 
-export default LoginPage
+const mapStateToProps = state => ({
+    theme: state.theme.theme
+})
+
+const mapDispatchToProps = dispatch => ({
+
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(LoginPage)
 
 const styles = StyleSheet.create({
     container: {

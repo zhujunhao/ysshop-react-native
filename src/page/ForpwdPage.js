@@ -1,10 +1,14 @@
 import React,{ Component } from 'react';
 import { StyleSheet,ScrollView, Text, View,Image,TouchableOpacity } from 'react-native';
 import { WingBlank,Flex,InputItem,List } from '@ant-design/react-native';
+import BackPressComponent from "../common/BackPressComponent";
 import NavigatorUtil from '../navigators/NavigatorUtil';
-import NavigationBar from '../common/NavigationBar';
+import NavigatorBar from '../common/NavigationBar';
+import ViewUtil from '../util/ViewUtil';
+import actions from "../../action";
+import { connect } from 'react-redux';
 
-class ForgetPwd extends Component {
+class ForpwdPage extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -13,22 +17,20 @@ class ForgetPwd extends Component {
             password2 : '',
             checkNum : ''
         }
+        this.backPress = new BackPressComponent({backPress: ()=> this.onBackPress()});
     }
 
-    static navigationOptions = {
-        header:null
-    };
+    onBackPress() {
+        NavigatorUtil.goBack(this.props.navigation);
+        return true;
+    }
 
-    leftButtonPart (imageRoad) {
-        return (
-            <TouchableOpacity
-                onPress = {()=>this.clickPage('back')}
-            >
-                <Image style={{width:25,height:25,margin:10}}
-                    source={imageRoad}
-                ></Image>
-            </TouchableOpacity>
-        )
+    componentDidMount() {
+        this.backPress.componentDidMount();
+    }
+
+    componentWillUnmout() {
+        this.backPress.componentWillUnmout();
     }
 
     clickPage(pageName) {
@@ -38,9 +40,15 @@ class ForgetPwd extends Component {
     }
 
     render(){
+        const {theme} = this.props;
+        let navigatorBar = <NavigatorBar
+                                leftButton = {ViewUtil.getLeftBackButton( () => NavigatorUtil.goBack(this.props.navigation) )}
+                                title = {'修改登录密码'}
+                                style={theme.styles.navBar}
+                            />
         return(
             <View style={{flex:1}}>
-                <NavigationBar title={'修改登录密码'}/>
+                {navigatorBar}
                 <ScrollView style={styles.container}>
                     <WingBlank>
                         <Flex direction={"column"} justify={"center"}>
@@ -103,12 +111,12 @@ class ForgetPwd extends Component {
                                     >
                                         <Text style={styles.valNameTxt}>验证码：</Text>
                                     </InputItem>
-                                    <View style={{width:80,height:30,backgroundColor:'#79d7da',borderRadius:8}}>
+                                    <View style={{width:80,height:30,backgroundColor:theme.themeColor,borderRadius:8}}>
                                         <Text style={{lineHeight:30,color:'#fff',fontSize:13,textAlign:"center"}}>发送验证码</Text>
                                     </View>
                                 </Flex>
                             </List>
-                            <View style={{width:300,height:40,borderRadius:20,backgroundColor:'#79d7da',marginTop:20}}>
+                            <View style={{width:300,height:40,borderRadius:20,backgroundColor:theme.themeColor,marginTop:20}}>
                                 <Text style={{lineHeight:40,color:'#fff',fontSize:13,textAlign:'center'}}>修改密码</Text>
                             </View>
                         </Flex>
@@ -120,7 +128,15 @@ class ForgetPwd extends Component {
     }
 }
 
-export default ForgetPwd;
+const mapStateToProps = state => ({
+    theme: state.theme.theme
+})
+
+const mapDispatchToProps = dispatch => ({
+
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(ForpwdPage)
 
 
 const styles = StyleSheet.create({

@@ -1,11 +1,9 @@
 import React from 'react';
-import {Alert,DeviceInfo,View,Text,Image,Dimensions,StyleSheet,Platform,CameraRoll} from "react-native";
+import {Alert,DeviceInfo,View,Text,Image,Dimensions,StyleSheet,Platform,TouchableOpacity} from "react-native";
 import BackPressComponent from "../../common/BackPressComponent";
-import NavigationUtil from "../../navigators/NavigatorUtil";
+import NavigatorUtil from "../../navigators/NavigatorUtil";
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import GlobalStyles from '../../ask/styles/GlobalStyles.js';
-import share from '../../../res/data/share';
-import ShareUtile from "../../util/ShareUtil";
 import Imgshare from "../../common/Imgshare";
 import ViewUtil from '../../util/ViewUtil.js';
 export const FLAG_ABOUT = {flag_about: 'about',flag_about_me:'about_me'};
@@ -18,7 +16,7 @@ export default class AboutCommon {
     }
 
     onBackPress() {
-        NavigationUtil.goBack(this.props.navigation);
+        NavigatorUtil.goBack(this.props.navigation);
         return true;
     }
 
@@ -72,7 +70,11 @@ export default class AboutCommon {
     }
 
     onShare() {
-        this.DownloadLocalImage('http://m.qpic.cn/psb?/V14gV2Ft3x6LH8/c9lbJZs5fd3NJ1lgvlGCBjCJz5QJdsHND6.KYxUhq5Y!/b/dLkAAAAAAAAA&bo=QAYqBAAAAAARB1g!&rf=viewer_4')
+        this.DownloadLocalImage('http://a1.qpic.cn/psb?/V14gV2Ft3x6LH8/XjuqZjBhfQHAgCK5nrP8hjD0hCgKOQSGAJJ4X6DHq5Q!/m/dFQBAAAAAAAAnull&bo=OASABwAAAAADB5k!&rf=photolist&t=5')
+    }
+
+    gotoLogin(pathName) {
+        NavigatorUtil.goPage(this.props,pathName)
     }
 
     
@@ -101,15 +103,16 @@ export default class AboutCommon {
 
         config.renderForeground = () => (
             <View key="parallax-header" style={styles.parallaxHeader}>
-                <Image style={styles.avatar}
-                    source={avatar}
-                />
-                <Text style={styles.sectionSpeakerText}>
-                    {params.name}
-                </Text>
-                <Text style={styles.sectionTitleText}>
-                    {params.description}
-                </Text>
+                <View style={styles.avatar}>
+                    <Text style={{color:'#999',fontSize:14}}>悦达人</Text>
+                </View>
+                <TouchableOpacity 
+                    activeOpacity={1}
+                >
+                    <Text style={styles.sectionSpeakerText}>
+                        更多内容敬请期待
+                    </Text>
+                </TouchableOpacity>
             </View>
         )
 
@@ -119,7 +122,7 @@ export default class AboutCommon {
             </View>
         )
 
-        const leftpart = this.props.flagAbout == "about_me" ? ViewUtil.getLeftBackButton(() => NavigationUtil.goBack(this.props.navigation)) : ViewUtil.getSetButton(() => NavigationUtil.goPage(this.props,'MyPage'));
+        const leftpart = this.props.flagAbout == "about_me" ? ViewUtil.getLeftBackButton(() => NavigatorUtil.goBack(this.props.navigation)) : ViewUtil.getSetButton(() => NavigatorUtil.goPage(this.props,'MyPage'));
 
         config.renderFixedHeader = () => (
             <View key="fixed-header" style={styles.fixedSection}>
@@ -149,7 +152,7 @@ export default class AboutCommon {
 }
 
 const window = Dimensions.get('window');
-const AVATAR_SIZE = 90;
+const AVATAR_SIZE = 80;
 const PARALLAX_HEADER_HEIGHT = 230;
 const TOP = (Platform.OS === 'ios') ? 20 + (DeviceInfo.isIPhoneX_deprecated ? 24 : 0) : 15;
 const STICKY_HEADER_HEIGHT = (Platform.OS === 'ios') ? GlobalStyles.nav_bar_height_ios + TOP : GlobalStyles.nav_bar_height_android;
@@ -191,16 +194,22 @@ const styles = StyleSheet.create({
     parallaxHeader: {
         alignItems: 'center',
         flex: 1,
-        flexDirection: 'column',
-        paddingTop: 100
+        flexDirection: 'row',
     },
     avatar: {
+        marginLeft:20,
+        marginRight:10,
         marginBottom: 10,
-        borderRadius: AVATAR_SIZE / 2
+        borderRadius: AVATAR_SIZE / 2,
+        alignItems:'center',
+        justifyContent:'center',
+        width:80,
+        height:80,
+        backgroundColor:'#fff'
     },
     sectionSpeakerText: {
         color: 'white',
-        fontSize: 24,
+        fontSize: 16,
         paddingVertical: 5,
         marginBottom: 10
     },

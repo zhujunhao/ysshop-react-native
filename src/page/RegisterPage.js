@@ -1,8 +1,12 @@
 import React,{ Component } from 'react';
 import { StyleSheet,ScrollView, Text, View,Image,TouchableOpacity } from 'react-native';
 import { WhiteSpace,WingBlank,InputItem,List } from '@ant-design/react-native';
+import BackPressComponent from "../common/BackPressComponent";
 import NavigatorUtil from '../navigators/NavigatorUtil';
-import NavigationBar from '../common/NavigationBar';
+import NavigatorBar from '../common/NavigationBar';
+import ViewUtil from '../util/ViewUtil';
+import actions from "../../action";
+import { connect } from 'react-redux';
 
 class RegisterPage extends Component {
     constructor(props) {
@@ -13,22 +17,21 @@ class RegisterPage extends Component {
             password2 : "",
             chenkNum : ""
         }
+        this.backPress = new BackPressComponent({backPress: ()=> this.onBackPress()});
     }
 
-    static navigationOptions = {
-        header:null
-    };
 
-    leftButtonPart (imageRoad) {
-        return (
-            <TouchableOpacity
-                onPress = {()=>this.clickPage('back')}
-            >
-                <Image style={{width:25,height:25,margin:10}}
-                    source={imageRoad}
-                ></Image>
-            </TouchableOpacity>
-        )
+    onBackPress() {
+        NavigatorUtil.goBack(this.props.navigation);
+        return true;
+    }
+
+    componentDidMount() {
+        this.backPress.componentDidMount();
+    }
+
+    componentWillUnmout() {
+        this.backPress.componentWillUnmout();
     }
 
     clickPage(pageName) {
@@ -38,16 +41,22 @@ class RegisterPage extends Component {
     }
 
     render() {
+        const {theme} = this.props;
+        let navigatorBar = <NavigatorBar
+                                leftButton = {ViewUtil.getLeftBackButton( () => NavigatorUtil.goBack(this.props.navigation) )}
+                                title = {'注册'}
+                                style={theme.styles.navBar}
+                            />
         return(
             <View style={{flex:1}}>
-                <NavigationBar title={'注册'}/>
+                {navigatorBar}
                 <ScrollView style={{ flex: 1}}
                     automaticallyAdjustContentInsets={false}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                 >
                     <View style={{height:100,justifyContent:'center',marginTop:20}}>
-                        <Text style={{textAlign:"center",color:'#333',fontSize:20,fontWeight:'bold'}}>欢迎来到悦购</Text>
+                        <Text style={{textAlign:"center",color:'#333',fontSize:20,fontWeight:'bold'}}>欢迎来到悦达人</Text>
                     </View>
                     <WhiteSpace />
                     <WingBlank>
@@ -135,7 +144,7 @@ class RegisterPage extends Component {
                                 </InputItem>
                             </WingBlank>
                         </List>
-                        <View style={{height:40,backgroundColor:'#79d7da',marginTop:20,borderColor:'#79d7da',borderRadius:20}}>
+                        <View style={{height:40,backgroundColor:theme.themeColor,marginTop:20,borderColor:theme.themeColor,borderRadius:20}}>
                             <Text style={{color:'#fff',textAlign:"center",lineHeight:40,fontSize:13}}>立即注册</Text>
                         </View>
                     </WingBlank>
@@ -145,7 +154,16 @@ class RegisterPage extends Component {
     }
 }
 
-export default RegisterPage;
+const mapStateToProps = state => ({
+    theme: state.theme.theme
+})
+
+const mapDispatchToProps = dispatch => ({
+
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(RegisterPage)
+
 
 const styles = StyleSheet.create({
     container: {

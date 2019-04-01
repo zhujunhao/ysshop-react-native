@@ -10,7 +10,7 @@ export default class FavoriteUtil {
      * @param flag
      */
     static onFavorite(favoriteDao, item, isFavorite) {
-        const key = item.id.toString();
+        const key = item.goodsNum.toString();
         if (isFavorite) {
             favoriteDao.saveFavoriteItem(key, JSON.stringify(item));
         } else {

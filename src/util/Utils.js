@@ -6,7 +6,7 @@ export default class Utils {
         console.log("keys",JSON.stringify(keys))
         if (!keys) return false;
         for (let i = 0, len = keys.length; i < len; i++) {
-            if (item.id.toString() === keys[i]) {
+            if (item.goodsNum.toString() === keys[i]) {
                 return true;
             }
         }
