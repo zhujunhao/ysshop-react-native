@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
-import { StyleSheet,ScrollView, Text, View,Image,TouchableOpacity } from 'react-native';
-import { WingBlank,Flex,InputItem,List } from '@ant-design/react-native';
+import { StyleSheet,ScrollView, Text, View,TouchableOpacity,TextInput } from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import BackPressComponent from "../common/BackPressComponent";
 import NavigatorUtil from '../navigators/NavigatorUtil';
 import NavigatorBar from '../common/NavigationBar';
@@ -48,52 +48,59 @@ class ChangemobPage extends Component {
             <View style={{flex:1}}>
                 {navigatorBar}
                 <ScrollView style={styles.container}>
-                    <WingBlank>
-                        <Flex direction={"column"} justify={"center"}>
-
-                            <List style={{width:300,marginTop:100}}>
-                                <InputItem
-                                    style={styles.txtPut}
-                                    clear
-                                    type="phone"
-                                    value={this.state.phoneNum}
-                                    onChange={value => {
-                                    this.setState({
-                                        phoneNum: value,
-                                    });
-                                    }}
-                                    placeholder="请输入新手机号码"
-                                >
-                                    <Text style={styles.valNameTxt}>手机号码：</Text>
-                                </InputItem>
-                                <Flex direction={"row"}>
-                                    <InputItem
-                                        clear
-                                        style={{width:200,fontSize:13}}
-                                        type="phone"
-                                        value={this.state.checkNum}
-                                        onChange={value => {
-                                        this.setState({
-                                            checkNum: value,
-                                        });
-                                        }}
-                                        placeholder="请输入手机验证码"
-                                    >
-                                        <Text style={styles.valNameTxt}>验证码：</Text>
-                                    </InputItem>
-                                    <View style={{width:80,height:30,backgroundColor:theme.themeColor,borderRadius:8}}>
-                                        <Text style={{lineHeight:30,color:'#fff',fontSize:13,textAlign:"center"}}>发送验证码</Text>
-                                    </View>
-                                </Flex>
-                            </List>
-                            <View style={{width:300,height:40,borderRadius:20,backgroundColor:theme.themeColor,marginTop:20}}>
-                                <Text style={{lineHeight:40,color:'#fff',fontSize:13,textAlign:'center'}}>修改手机号码</Text>
+                    <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center',marginTop:100}}>
+                        {/* 手机号码 */}
+                        <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                            <View style={{flex:1,flexDirection:'row',justifyContent:'center',height:59}}>
+                                <AntDesign
+                                    name={'mobile1'}
+                                    size={20}
+                                    style={{color:'#999',marginRight: 6,marginTop: 20}}
+                                />
+                                <TextInput
+                                    style={{width:189,fontSize:14,height:59}}
+                                    underlineColorAndroid='transparent'
+                                    placeholderTextColor='#999'
+                                    maxLength={11}
+                                    keyboardType='numeric'
+                                    placeholder='请输入手机号码'
+                                />
+                                <View style={{width:100,height:59,justifyContent:'center'}}></View>
                             </View>
-                        </Flex>
-                    </WingBlank>
+                            <View style={{backgroundColor:'#eee',height:1,width:320}}></View>
+                        </View>
+                        {/* 手机验证码 */}
+                        <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                            <View style={{flex:1,flexDirection:'row',justifyContent:'center',height:59}}>
+                                <AntDesign
+                                    name={'hourglass'}
+                                    size={20}
+                                    style={{color:'#999',marginRight: 6,marginTop: 20}}
+                                />
+                                <TextInput
+                                    style={{width:189,fontSize:14,height:59}}
+                                    underlineColorAndroid='transparent'
+                                    placeholderTextColor='#999'
+                                    maxLength={6}
+                                    keyboardType='numeric'
+                                    placeholder='请输入手机验证码'
+                                />
+                                <View style={{width:1,height:20,marginLeft:10,marginRight:10,marginTop:20,backgroundColor:'#dcdcdc'}}></View>
+                                <View style={{width:80,height:59,justifyContent:'center'}}>
+                                    <Text style={{color:'#999',fontSize:13,textAlign:'center'}}
+                                        onPress={()=>this.clickPage('忘记密码')}
+                                    >发送验证码</Text>
+                                </View>
+                            </View>
+                            <View style={{backgroundColor:'#eee',height:1,width:320}}></View>
+                        </View>
+                        {/* 修改手机号 */}
+                        <View style={{width:320,height:46,borderRadius:25,backgroundColor:theme.themeColor,marginTop:30,justifyContent:'center'}}>
+                            <Text style={{lineHeight:40,color:'#fff',fontSize:15,textAlign:'center'}}>修改手机号码</Text>
+                        </View>
+                    </View>
                 </ScrollView>
             </View>
-            
         )
     }
 }

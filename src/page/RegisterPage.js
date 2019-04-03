@@ -1,10 +1,10 @@
 import React,{ Component } from 'react';
-import { StyleSheet,ScrollView, Text, View,Image,TouchableOpacity } from 'react-native';
-import { WhiteSpace,WingBlank,InputItem,List } from '@ant-design/react-native';
+import { StyleSheet,ScrollView, Text, View,TouchableOpacity, TextInput } from 'react-native';
 import BackPressComponent from "../common/BackPressComponent";
 import NavigatorUtil from '../navigators/NavigatorUtil';
 import NavigatorBar from '../common/NavigationBar';
 import ViewUtil from '../util/ViewUtil';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import actions from "../../action";
 import { connect } from 'react-redux';
 
@@ -58,96 +58,113 @@ class RegisterPage extends Component {
                     <View style={{height:100,justifyContent:'center',marginTop:20}}>
                         <Text style={{textAlign:"center",color:'#333',fontSize:20,fontWeight:'bold'}}>欢迎来到悦达人</Text>
                     </View>
-                    <WhiteSpace />
-                    <WingBlank>
-                        <List>
-                            <WingBlank>
-                                <InputItem style={styles.inputVal}
-                                        clear
-                                        type="phone"
-                                        value={this.state.phoneNum}
-                                        onChange={value => {
-                                            this.setState({
-                                                phoneNum: value,
-                                            });
-                                        }}
-                                        placeholder="请输入手机号码"
-                                    >
-                                        <Text style={styles.typeNames}>手机号码：</Text>
-                                </InputItem>
-                            </WingBlank>
-                            <WhiteSpace />
-                            <WingBlank>
-                                <InputItem style={styles.inputVal}
-                                    clear
-                                    type="password"
-                                    value={this.state.password1}
-                                    onChange={value => {
-                                        this.setState({
-                                            password1: value,
-                                        });
-                                    }}
-                                    placeholder="请输入登录密码"
-                                >
-                                    <Text style={styles.typeNames}>登录密码：</Text>
-                                </InputItem>
-                            </WingBlank>
-
-                            <WhiteSpace />
-                            <WingBlank>
-                                <InputItem style={styles.inputVal}
-                                    clear
-                                    type="password"
-                                    value={this.state.password2}
-                                    onChange={value => {
-                                        this.setState({
-                                            password2: value,
-                                        });
-                                    }}
-                                    placeholder="请再次输入登录密码"
-                                >
-                                    <Text style={styles.typeNames}>确认密码：</Text>
-                                </InputItem>
-                            </WingBlank>
-
-                            <WhiteSpace />
-                            <WingBlank>
-                                <InputItem style={styles.inputVal}
-                                    clear
-                                    type="number"
-                                    value={this.state.chenkNum}
-                                    onChange={value => {
-                                        this.setState({
-                                            chenkNum: value,
-                                        });
-                                    }}
-                                    placeholder="请输入手机验证码"
-                                >
-                                    <Text style={styles.typeNames}>手机验证码：</Text>
-                                </InputItem>
-                            </WingBlank>
-
-                            <WhiteSpace />
-                            <WingBlank>
-                                <InputItem style={styles.inputVal}
-                                    clear
-                                    type="number"
-                                    value={this.state.number}
-                                    onChange={value => {
-                                        this.setState({
-                                            number: value,
-                                        });
-                                    }}
-                                    placeholder="请输入推荐人邀请号"
-                                >
-                                    <Text style={styles.typeNames}>邀请号：</Text>
-                                </InputItem>
-                            </WingBlank>
-                        </List>
-                        <View style={{height:40,backgroundColor:theme.themeColor,marginTop:20,borderColor:theme.themeColor,borderRadius:20}}>
-                            <Text style={{color:'#fff',textAlign:"center",lineHeight:40,fontSize:13}}>立即注册</Text>
+                    <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                        {/* 用户名 */}
+                        <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                            <View style={{flex:1,flexDirection:'row',justifyContent:'center',height:59}}>
+                                <AntDesign
+                                    name={'mobile1'}
+                                    size={20}
+                                    style={{color:'#999',marginRight: 6,marginTop: 20}}
+                                />
+                                <TextInput
+                                    style={{width:189,fontSize:14,height:59}}
+                                    underlineColorAndroid='transparent'
+                                    placeholderTextColor='#999'
+                                    maxLength={11}
+                                    keyboardType='numeric'
+                                    placeholder='请输入手机号码'
+                                />
+                                <View style={{width:100,height:59,justifyContent:'center'}}></View>
+                            </View>
+                            <View style={{backgroundColor:'#eee',height:1,width:320}}></View>
                         </View>
-                    </WingBlank>
+                        {/* 密码 */}
+                        <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                            <View style={{flex:1,flexDirection:'row',justifyContent:'center',height:59}}>
+                                <AntDesign
+                                    name={'lock'}
+                                    size={20}
+                                    style={{color:'#999',marginRight: 6,marginTop: 20}}
+                                />
+                                <TextInput
+                                    style={{width:189,fontSize:14,height:59}}
+                                    underlineColorAndroid='transparent'
+                                    placeholderTextColor='#999'
+                                    secureTextEntry={true}
+                                    placeholder='请输入密码'
+                                />
+                                <View style={{width:100,height:59,justifyContent:'center'}}></View>
+                            </View>
+                            <View style={{backgroundColor:'#eee',height:1,width:320}}></View>
+                        </View>
+                        {/* 二次密码 */}
+                        <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                            <View style={{flex:1,flexDirection:'row',justifyContent:'center',height:59}}>
+                                <AntDesign
+                                    name={'lock'}
+                                    size={20}
+                                    style={{color:'#999',marginRight: 6,marginTop: 20}}
+                                />
+                                <TextInput
+                                    style={{width:189,fontSize:14,height:59}}
+                                    underlineColorAndroid='transparent'
+                                    placeholderTextColor='#999'
+                                    secureTextEntry={true}
+                                    placeholder='请再次输入密码'
+                                />
+                                <View style={{width:100,height:59,justifyContent:'center'}}></View>
+                            </View>
+                            <View style={{backgroundColor:'#eee',height:1,width:320}}></View>
+                        </View>
+                        {/* 手机验证码 */}
+                        <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                            <View style={{flex:1,flexDirection:'row',justifyContent:'center',height:59}}>
+                                <AntDesign
+                                    name={'hourglass'}
+                                    size={20}
+                                    style={{color:'#999',marginRight: 6,marginTop: 20}}
+                                />
+                                <TextInput
+                                    style={{width:189,fontSize:14,height:59}}
+                                    underlineColorAndroid='transparent'
+                                    placeholderTextColor='#999'
+                                    maxLength={6}
+                                    keyboardType='numeric'
+                                    placeholder='请输入手机验证码'
+                                />
+                                <View style={{width:1,height:20,marginLeft:10,marginRight:10,marginTop:20,backgroundColor:'#dcdcdc'}}></View>
+                                <View style={{width:80,height:59,justifyContent:'center'}}>
+                                    <Text style={{color:'#999',fontSize:13,textAlign:'center'}}
+                                        onPress={()=>this.clickPage('忘记密码')}
+                                    >发送验证码</Text>
+                                </View>
+                            </View>
+                            <View style={{backgroundColor:'#eee',height:1,width:320}}></View>
+                        </View>
+                        {/* 邀请人号码 */}
+                        <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+                            <View style={{flex:1,flexDirection:'row',justifyContent:'center',height:59}}>
+                                <AntDesign
+                                    name={'barcode'}
+                                    size={20}
+                                    style={{color:'#999',marginRight: 6,marginTop: 20}}
+                                />
+                                <TextInput
+                                    style={{width:189,fontSize:14,height:59}}
+                                    underlineColorAndroid='transparent'
+                                    placeholderTextColor='#999'
+                                    placeholder='请输入邀请人编号'
+                                />
+                                <View style={{width:100,height:59,justifyContent:'center'}}></View>
+                            </View>
+                            <View style={{backgroundColor:'#eee',height:1,width:320}}></View>
+                        </View>
+                        {/* 登录 */}
+                        <View style={{width:320,height:46,borderRadius:25,backgroundColor:theme.themeColor,marginTop:30,justifyContent:'center'}}>
+                            <Text style={{lineHeight:40,color:'#fff',fontSize:15,textAlign:'center'}}>注册</Text>
+                        </View>
+                    </View>
                 </ScrollView>
             </View>
         )

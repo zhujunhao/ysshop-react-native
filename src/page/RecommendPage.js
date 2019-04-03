@@ -15,7 +15,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FavoriteDao from '../ask/FavoriteDao';
 import SwiperArr from '../common/swiper/swiper';
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.Collection);
-const URL = 'http://39.108.154.18:3000/api/v0/lists';
+const URL = 'https://www.yuegomall.com/api/v0/lists';
 
 class RecommendPage extends Component {
     constructor(props) {

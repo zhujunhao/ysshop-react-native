@@ -95,6 +95,8 @@ class MyPage extends Component {
             {navigatorBar}
             <ScrollView>
                 <View style={GlobalStyles.line}/>
+                {this.getItem(MORE_MENU.ChangeMobile)}
+                <View style={GlobalStyles.line}/>
                 {this.getItem(MORE_MENU.Selcategory)}
                 <View style={GlobalStyles.line}/>
                 {this.getItem(MORE_MENU.Sortcategory)}

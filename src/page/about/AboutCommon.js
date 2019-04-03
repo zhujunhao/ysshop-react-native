@@ -108,9 +108,10 @@ export default class AboutCommon {
                 </View>
                 <TouchableOpacity 
                     activeOpacity={1}
+                    onPress={()=>this.gotoLogin('LoginPage')}
                 >
                     <Text style={styles.sectionSpeakerText}>
-                        更多内容敬请期待
+                        登录/注册
                     </Text>
                 </TouchableOpacity>
             </View>

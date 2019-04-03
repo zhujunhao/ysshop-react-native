@@ -3,7 +3,7 @@ import {_projectModels,doCallBack,handleData } from '../ActionUtil';
 import ArrayUtil from '../../src/util/ArrayUtil';
 import Utils from '../../src/util/Utils';
 
-const SEARCH_URL = 'http://39.108.154.18:3000/api/v0/lists/$';
+const SEARCH_URL = 'https://www.yuegomall.com/api/v0/lists/$';
 const CANCEL_TOKENS = [];
 
 /**
