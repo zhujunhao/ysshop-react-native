@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View,} from 'react-native'
+import {TouchableOpacity} from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import HTMLView from 'react-native-htmlview';
 import {PropTypes} from 'prop-types';
 
 export default class BaseItem extends Component {
@@ -13,6 +12,7 @@ export default class BaseItem extends Component {
 
     constructor(props) {
         super(props);
+        console.log("base",JSON.stringify(this.props))
         this.state = {
             isFavorite: this.props.projectModel.isFavorite,
         }
@@ -62,7 +62,7 @@ export default class BaseItem extends Component {
             onPress={() => this.onPressFavorite()}>
             <AntDesign
                 name={this.state.isFavorite ? 'heart' : 'hearto'}
-                size={18}
+                size={14}
                 style={{color: theme.themeColor}}
             />
         </TouchableOpacity>

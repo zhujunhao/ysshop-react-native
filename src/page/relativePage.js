@@ -25,7 +25,6 @@ class DetailPage extends Component {
         console.log("projectModelde",JSON.stringify(projectModel));
         this.favoriteDao = new FavoriteDao(flag);
         const title = projectModel.item.titGoods;
-        
         switch (projectModel.item.listTypes[0]) {
             case '全部':
                 this.storeName = '/&all';

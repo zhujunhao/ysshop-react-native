@@ -5,6 +5,8 @@ import RecommendPage from '../page/RecommendPage';
 import MyPage from '../page/MyPage';
 import YdrPage from '../page/YdrPage';
 import SharePage from '../page/SharePage';
+import SliderImg from '../common/SliderImg';
+import LoginPage from '../page/LoginPage';
 import FavoritePage from '../page/FavoritePage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import EventTypes from '../../src/util/EventTypes';
@@ -51,10 +53,36 @@ const TABS = {//页面路由配置
             ),
         }       
     },
+    LoginPage: {
+        screen: LoginPage,
+        navigationOptions: {
+            tabBarLabel: '登录',
+            tabBarIcon: ({tintColor, focused}) => (
+                <AntDesign
+                    name={'user'}
+                    size={22}
+                    style={{color: tintColor}}
+                />
+            ),
+        }       
+    },
+    SliderImg: {
+        screen: SliderImg,
+        navigationOptions: {
+            tabBarLabel: '引导页',
+            tabBarIcon: ({tintColor, focused}) => (
+                <AntDesign
+                    name={'user'}
+                    size={22}
+                    style={{color: tintColor}}
+                />
+            ),
+        }         
+    },
     MyPage: {
         screen: MyPage,
         navigationOptions: {
-            tabBarLabel: '我的',
+            tabBarLabel: '设置',
             tabBarIcon: ({tintColor, focused}) => (
                 <AntDesign
                     name={'user'}

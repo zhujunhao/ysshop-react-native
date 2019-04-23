@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {ActivityIndicator,FlatList,Platform,RefreshControl,StyleSheet,Text,TextInput,TouchableOpacity,View,DeviceInfo} from 'react-native';
+import {ActivityIndicator,FlatList,Platform,RefreshControl,StyleSheet,Text,TextInput,TouchableOpacity,View,DeviceInfo,AsyncStorage} from 'react-native';
 import {connect} from 'react-redux';
 import actions from '../../action/index'
 import NavigatorUtil from '../navigators/NavigatorUtil'
+import FavoriteUtil from '../util/FavoriteUtil';
 import FavouriteItem from '../common/FavouriteItem';
 import NavigationBar from '../common/NavigationBar';
 import {FLAG_STORAGE} from '../ask/DataStore';
@@ -11,17 +12,20 @@ import Utils from "../util/Utils";
 import ViewUtil from '../util/ViewUtil';
 import BackPressComponent from '../common/BackPressComponent';
 import FavoriteDao from '../ask/FavoriteDao';
-const searchHistoryDao = new FavoriteDao(FLAG_STORAGE.History);
-
+const favoriteDao = new FavoriteDao(FLAG_STORAGE.Collection);
 
 const pageSize = 10;//设为常量，防止修改
+
 class SearchPage extends Component {
     constructor(props) {
         super(props);
-        console.log("searchprosp",JSON.stringify(props))
+        console.log("searchprosp",JSON.stringify(this.props))
         this.params = this.props.navigation.state.params;
-        this.isKeyChange = false;
         this.backPress = new BackPressComponent({backPress: () => this.onBackPress()})
+        this.historyView();
+        this.state = {
+            historyStr: ''
+        }
     }
 
     componentDidMount() {
@@ -41,29 +45,31 @@ class SearchPage extends Component {
         NavigatorUtil.goBack(this.props.navigation)
     }
 
-    loadData(loadMore) {
+    loadData(loadMore,searchVal) {
         const {onLoadMoreSearch, onSearch, search, keys} = this.props;
         console.log("searchprops",JSON.stringify(this.props))
         console.log("keys",keys)
         if (loadMore) {
-            onLoadMoreSearch(++search.pageIndex, pageSize, search.items, callback => {
+            onLoadMoreSearch(++search.pageIndex, pageSize, search.items, this.favoriteDao,callback => {
                 this.refs.toast.show('没有更多了');
             })
+            // 点击历史记录
+        } else if (searchVal) {
+            onSearch(searchVal, pageSize, this.searchToken = new Date().getTime(), this.favoriteDao, keys, message => {
+                this.refs.toast.show(message);
+            })
         } else {
-            onSearch(this.inputKey, pageSize, this.searchToken = new Date().getTime(),keys,  message => {
+            onSearch(this.inputKey, pageSize, this.searchToken = new Date().getTime(), this.favoriteDao, keys, message => {
                 this.refs.toast.show(message);
             })
         }
     }
 
     onBackPress() {
-        const {onSearchCancel, onLoadLanguage} = this.props;
+        const { onSearchCancel } = this.props;
         onSearchCancel();//退出时取消搜索
         this.refs.input.blur();
         NavigatorUtil.goBack(this.props.navigation);
-        if (this.isKeyChange) {
-            onLoadLanguage(FLAG_LANGUAGE.flag_key);//重新加载标签
-        }
         return true;
     }
 
@@ -81,7 +87,7 @@ class SearchPage extends Component {
                     callback
                 },'DetailPage')
             }}
-            onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+            onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao,item, isFavorite)}
         />
     }
 
@@ -97,40 +103,34 @@ class SearchPage extends Component {
             </View>
     }
 
-    /**
-     * 添加标签
-     */
-    saveKey() {
-        const {keys} = this.props;
-        let key = this.inputKey;
-        if (Utils.checkKeyIsExist(keys, key)) {
-            this.refs.toast.show(key + '已经存在');
-        } else {
-            key = {
-                "path": key,
-                "name": key,
-                "checked": true
-            };
-            keys.unshift(key);//将key添加到数组的开头
-            this.refs.toast.show(key.name + '保存成功');
-            this.isKeyChange = true;
-        }
-    }
-
-    onRightButtonClick() {
+    onRightButtonClick(searchVal) {
         const {onSearchCancel, search} = this.props;
         console.log("search1",search)
         if (search.showText === '搜索') {
-            searchHistoryDao.saveFavoriteItem(this.inputKey, JSON.stringify(this.inputKey));
-            this.loadData();
+            AsyncStorage.getItem('historyArr').then((value) => {
+                if (value) {
+                    //排重
+                    if (value.indexOf(this.inputKey) == -1) {
+                        value = value + ',' + this.inputKey
+                        AsyncStorage.setItem('historyArr',value)
+                    }
+                } else {
+                    AsyncStorage.setItem('historyArr',this.inputKey)
+                }
+            }).catch(() => {
+               
+            });
+            
+            this.loadData(false,searchVal);
         } else {
             onSearchCancel(this.searchToken);
         }
     }
 
-    renderNavBar() {
+    renderNavBar(historyVal) {
         const {showText, inputKey} = this.props.search;
         const placeholder = inputKey || "请输入您想购买的商品名称";
+        
         let inputView = <TextInput
             ref="input"
             placeholder={placeholder}
@@ -161,8 +161,12 @@ class SearchPage extends Component {
             {rightButton}
         </View>
     }
+
     onItemClick (data,index) {
 
+        console.log("datae",JSON.stringify(data))
+        console.log("index",JSON.stringify(index))
+        this.onRightButtonClick(data);
     }
 
     historyBox (data,index) {
@@ -178,33 +182,51 @@ class SearchPage extends Component {
     }
 
 
-    historyView () {
-        const {theme} = this.params;
-        new FavoriteDao(FLAG_STORAGE.History).getAllItems()
-        .then(items => {
-            let views = [];
+
+
+    historyView = () => {
+        AsyncStorage.getItem('historyArr',(error,result)=>{
+            if (error){
+                console.log('取值失败:'+error);
+            }else{
+                console.log('取值:'+result);
+                this.setState({
+                    historyStr: result
+                })
+            }
+        })
+    }
+
+    viewsArr = () => {
+        console.log("historyStr123",this.state.historyStr)
+        let views = [];
+        
+        if (this.state.historyStr) {
+
+            let values;
+            
+            values = this.state.historyStr.split(',')
+        
             views.push(<View style={{height:40,marginTop:10,justifyContent:'center',marginLeft:16}}>
-                <Text style={{color:theme.themeColor}}>历史搜索</Text>
+                <Text >历史搜索</Text>
             </View>)
-            for (let i = 0, len = items.length; i < len; i+=5) {
+            console.log("viewsArrres",JSON.stringify(values))
+            for (let i = 0, len = values.length; i < len; i+=5) {
+                console.log('ioioioio')
                 views.push(
                     <View key={i}>
                         <View style={styles.historyitem}>
-                            {this.historyBox(items[i].length>=4?`${items[i].substring(0,4)}...`: items[i], i)}
-                            {i + 1 < len ? this.historyBox(items[i + 1].length>=4?`${items[i + 1].substring(0,4)}...`: items[i + 1], i+1) : <View></View>}
-                            {i + 2 < len ? this.historyBox(items[i + 2].length>=4?`${items[i + 2].substring(0,4)}...`: items[i + 2], i+2) : <View></View>}
-                            {i + 3 < len ? this.historyBox(items[i + 3].length>=4?`${items[i + 3].substring(0,4)}...`: items[i + 3], i+3) : <View></View>}
-                            {i + 4 < len ? this.historyBox(items[i + 4].length>=4?`${items[i + 4].substring(0,4)}...`: items[i + 4], i+4) : <View></View>}
+                            {this.historyBox(values[i].length>=4?`${values[i].substring(0,4)}...`: values[i], i)}
+                            {i + 1 < len ? this.historyBox(values[i + 1].length>=4?`${values[i + 1].substring(0,4)}...`: values[i + 1], i+1) : <View></View>}
+                            {i + 2 < len ? this.historyBox(values[i + 2].length>=4?`${values[i + 2].substring(0,4)}...`: values[i + 2], i+2) : <View></View>}
+                            {i + 3 < len ? this.historyBox(values[i + 3].length>=4?`${values[i + 3].substring(0,4)}...`: values[i + 3], i+3) : <View></View>}
+                            {i + 4 < len ? this.historyBox(values[i + 4].length>=4?`${values[i + 4].substring(0,4)}...`: values[i + 4], i+4) : <View></View>}
                         </View>
                     </View>
                 )
             }
-            return {views}
-        })
-        .catch(e => {
-            console.log(e);
-        }) 
-
+        }
+        return views
     }
 
     render() {
@@ -221,9 +243,7 @@ class SearchPage extends Component {
         />
         console.log("projectModels11",JSON.stringify(projectModels));
 
-
-
-        let listView = projectModels && projectModels.length>0?<FlatList
+        let listView = <FlatList
                 data={projectModels}
                 renderItem={data => this.renderItem(data)}
                 keyExtractor={item => "" + item.item.goodsNum}
@@ -257,12 +277,14 @@ class SearchPage extends Component {
                     this.canLoadMore = true; //fix 初始化时页调用onEndReached的问题
                     console.log('---onMomentumScrollBegin-----')
                 }}
-            /> : console.log('ddd',this.historyView())
+            />
+        
+        let historyViews = this.viewsArr()
 
         return <View style={{flex:1}}>
             {navigationBar}
             {this.renderNavBar()}
-            {listView}
+            {projectModels && projectModels.length>0? listView : historyViews}
             <Toast ref={'toast'}
                 position={'center'}
             />
@@ -275,10 +297,9 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     //将 dispatch(onRefreshPopular(storeName, url))绑定到props
-    onSearch: (inputKey, pageSize, recommendKeys, callBack,token) => dispatch(actions.onSearch(inputKey, pageSize, recommendKeys, callBack, token)),
+    onSearch: (inputKey, pageSize, token, favoriteDao, recommendKeys, callBack) => dispatch(actions.onSearch(inputKey, pageSize, token, favoriteDao, recommendKeys, callBack)),
     onSearchCancel: (token) => dispatch(actions.onSearchCancel(token)),
-    onLoadMoreSearch: (pageIndex, pageSize, dataArray, callBack) => dispatch(actions.onLoadMoreSearch(pageIndex, pageSize, dataArray, callBack)),
-    onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
+    onLoadMoreSearch: (pageIndex, pageSize, dataArray, favoriteDao, callBack) => dispatch(actions.onLoadMoreSearch(pageIndex, pageSize, dataArray, favoriteDao, callBack)),
 });
 
 //注意：connect只是个function，并不应定非要放在export后面

@@ -10,5 +10,6 @@ export const MORE_MENU = {
     LoginOut : {name: '退出登录', Icons: AntDesign, icon: 'export2'},
     Sortcategory : {name: '分类排序', Icons: AntDesign, icon:'database'},
     Selcategory : {name: '分类选择', Icons: AntDesign, icon:'switcher'},
-    CodePush : {name: '版本检查', Icons: AntDesign, icon:'download'}
+    CodePush : {name: '版本检查', Icons: AntDesign, icon:'download'},
+    Contactus : {name: '联系我们', Icons: AntDesign, icon:'customerservice'}
 }

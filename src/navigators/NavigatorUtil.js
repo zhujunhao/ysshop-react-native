@@ -1,11 +1,11 @@
-export default class NavigationUtil {
+export default class NavigatorUtil {
     /**
      * 跳转到指定页面
      */
     static goPage(params,page) {
-        const navigation = NavigationUtil.navigation;
+        const navigation = NavigatorUtil.navigation;
         if (!navigation) {
-            console.log('NavigationUtil.navigation can not be null')
+            console.log('NavigatorUtil.navigation can not be null')
             return;
         }
         navigation.navigate(
@@ -29,8 +29,16 @@ export default class NavigationUtil {
 
     static resetToHomePage(params) {
         const { navigation } = params;
-        navigation.navigate("Main");
+        navigation.navigate("HomePage");
     }
 
+    /**
+     * 重置到引导页
+     */
+
+    static resetToSlidePage(params) {
+        const { navigation } = params;
+        navigation.navigate("SliderImg");
+    }
 
 }

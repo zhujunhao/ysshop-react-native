@@ -1,46 +1,39 @@
 import React, { Component } from 'react';
 import {View,Text,Image,Clipboard,TouchableWithoutFeedback} from 'react-native';
-import NavigationUtil from '../../navigators/NavigatorUtil';
-import GlobalStyles from '../../ask/styles/GlobalStyles';
-import config from '../../../res/data/config';
-import BackPressComponent from '../../common/BackPressComponent';
-import AboutCommon, { FLAG_ABOUT } from './AboutCommon';
+import NavigatorUtil from '../navigators/NavigatorUtil';
+import GlobalStyles from '../ask/styles/GlobalStyles';
+import BackPressComponent from '../common/BackPressComponent';
 import Toast from 'react-native-easy-toast';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import NavigatorBar from '../common/NavigationBar';
+import ViewUtil from '../util/ViewUtil';
+import actions from "../../action";
+import { connect } from 'react-redux';
 
 
 export default class AboutPage extends Component {
     constructor(props) {
         super(props);
         console.log("uuu",JSON.stringify(this.props))
-        this.backPress = new BackPressComponent({backPress: () => this.onBackPress()})
+        this.backPress = new BackPressComponent({backPress: ()=> this.onBackPress()});
         this.params = this.props.navigation.state.params;
-        this.aboutCommon = new AboutCommon({
-                ...this.props,
-                navigation: this.props.navigation,
-                flagAbout: FLAG_ABOUT.flag_about_me
-            },data => this.setState({...data})
-        )
         this.state = {
-            data: config,
             coptext:'Mr_zhu2013'
         }
     };
+
+
+    onBackPress() {
+        NavigatorUtil.goBack(this.props.navigation);
+        return true;
+    }
 
     componentDidMount() {
         this.backPress.componentDidMount();
     }
 
-    componentWillUnmount() {
-        this.backPress.componentWillUnmount();
-    }
-
-    onBackPress() {
-        this.onBack();
-        return true;
-    }
-
-    onBack() {
-        NavigationUtil.goBack(this.props.navigation)
+    componentWillUnmout() {
+        this.backPress.componentWillUnmout();
     }
 
     async copy(){
@@ -51,14 +44,20 @@ export default class AboutPage extends Component {
     }
 
     render() {
-        const { theme } = this.params
+        const { theme } = this.params;
         const { coptext } = this.state;
+        let navigatorBar = <NavigatorBar
+                                leftButton = {ViewUtil.getLeftBackButton( () => NavigatorUtil.goBack(this.props.navigation) )}
+                                title = {'关于悦达人'}
+                                style={theme.styles.navBar}
+                            />
+        
         const content = <View>
             <View style={{flex:1,alignItems:'center'}}>
                 <Image
                     resizeMode={('contain')}
                     style={{width:300,height:300,marginTop:100}}
-                    source={require('../../../res/aboutme.png')}
+                    source={require('../../res/aboutme.png')}
                 ></Image>
                 <View style={{flexDirection:'row'}}>
                     <Text style={{marginTop:20,fontSize:13}}>微信号：</Text>
@@ -74,7 +73,12 @@ export default class AboutPage extends Component {
                 position={'center'}
             />
         </View>
-        return this.aboutCommon.render(content,this.state.data.app)
+        return (
+            <View>
+                {navigatorBar}
+                {content}
+            </View>
+        )
     }
 
 }

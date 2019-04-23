@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import { StyleSheet, Text, View, Platform,FlatList, RefreshControl,TouchableOpacity,ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Platform,FlatList, RefreshControl,TouchableOpacity,ActivityIndicator,InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../action/index';
 import { createMaterialTopTabNavigator,createAppContainer } from 'react-navigation';
@@ -100,11 +100,14 @@ class RecommendTab extends Component {
         const {tabLabel,path} = this.props;
         console.log("tabLabel",JSON.stringify(tabLabel))
         this.storeName = path;
+        console.log("sn",this.storeName)
         this.isFavoriteChanged = false;
     }
 
     componentDidMount(){
-        this.loadData();
+        InteractionManager.runAfterInteractions(()=>{
+            this.loadData();
+         });
         EventBus.getInstance().addListener(EventTypes.favorite_changed_recommend,this.favoriteChangeListener=() => {
             this.isFavoriteChanged = true;
         })
@@ -216,9 +219,10 @@ class RecommendTab extends Component {
         let searchPart = <TouchableOpacity
             onPress={()=>this.onSearch("SearchPage")}
             activeOpacity={1}
+            style={{width:360,height:50}}
         >
             <View style={{height:50,justifyContent:"center",alignItems:'center'}}>
-                <View style={{flexDirection:'row',alignItems:"center",justifyContent:'flex-start' ,width:300,height:32,backgroundColor:'#eee',borderRadius:18}}>
+                <View style={{flexDirection:'row',alignItems:"center",justifyContent:'flex-start' ,width:320,height:32,backgroundColor:'#eee',borderRadius:18}}>
                         <AntDesign
                             name={'search1'}
                             size={20}
@@ -228,7 +232,7 @@ class RecommendTab extends Component {
                                 marginLeft: 10
                             }}
                         />
-                        <Text>{'搜索更多优惠商品'}</Text>
+                        <Text style={{fontSize:13}}>{'搜索更多优惠商品'}</Text>
                 </View>
             </View>
         </TouchableOpacity>

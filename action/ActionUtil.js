@@ -42,7 +42,6 @@ import Utils from "../src/util/Utils";
     try {
          //获取收藏的key
          keys = await favoriteDao.getFavoriteKeys();
-         console.log("ker",JSON.stringify(keys))
      } catch (e) {
          console.log(e)
      }

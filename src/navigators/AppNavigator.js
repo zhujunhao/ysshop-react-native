@@ -1,6 +1,7 @@
 import React,{ Component } from 'react';
 import { createStackNavigator,createSwitchNavigator, createAppContainer } from 'react-navigation';
-import WelcomePage from '../page/WelcomePage'
+import WelcomePage from '../page/WelcomePage';
+import SliderImg from '../common/SliderImg';
 import SearchPage from '../page/SearchPage';
 import HomePage from '../page/HomePage';
 import ForpwdPage from '../page/ForpwdPage';
@@ -11,12 +12,14 @@ import ChangemobPage from '../page/ChangemobPage';
 import MyinfoPage from '../page/MyinfoPage';
 import Aboutus from '../page/Aboutus';
 import AboutMePage from '../page/about/AboutMePage';
-import AboutPage from '../page/about/AboutPage';
+import AboutPage from '../page/AboutPage';
+import relativePage from '../page/relativePage';
 import DetailPage from '../page/DetailPage';
 import FavoritePage from '../page/FavoritePage';
 import SelcategoryPage from '../page/SelcategoryPage';
 import CodePushPage from '../page/CodePushPage';
 import WebviewDeatil from '../page/WebviewDeatil';
+import ContactusPage from '../page/Contactus';
 import SortcategoryPage from '../page/SortcategoryPage';
 import YdrPage from '../page/YdrPage';
 import { connect } from 'react-redux';
@@ -36,6 +39,12 @@ const InitNavigator = createStackNavigator({
 const MainNavigator = createStackNavigator({
     HomePage: { 
       screen: HomePage,
+      navigationOptions: {
+        header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
+      } 
+    },
+    SliderImg: { 
+      screen: SliderImg,
       navigationOptions: {
         header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
       } 
@@ -94,8 +103,20 @@ const MainNavigator = createStackNavigator({
         header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
       } 
     },
+    ContactusPage: {
+      screen: ContactusPage,
+      navigationOptions: {
+        header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
+      } 
+    },
     DetailPage: {
       screen: DetailPage,
+      navigationOptions: {
+        header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
+      } 
+    },
+    relativePage: {
+      screen: relativePage,
       navigationOptions: {
         header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
       } 

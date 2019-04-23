@@ -3,6 +3,8 @@ import Types from '../../action/types';
 const defaultState = {};
 
 export default function onAction(state = defaultState,action) {
+    console.log("statere",JSON.stringify(state))
+    console.log("actionre",JSON.stringify(action))
     switch (action.type) {
         case Types.RECOMMEND_REFRESH_SUCCESS://下拉刷新成功
             return {

@@ -5,8 +5,7 @@ import NavigationBar from '../common/NavigationBar';
 import ViewUtil from '../util/ViewUtil';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SafeAreaViewPlus from '../common/SafeAreaViewPlus';
-const TRENDING_URL = 'https://github.com/';
-const THEME_COLOR = '#678';
+const goods_URL = 'https://detail.tmall.com/item.htm?id=';
 import NavigatorUtil from '../navigators/NavigatorUtil';
 import BackPressComponent from '../common/BackPressComponent';
 import FavoriteDao from '../ask/FavoriteDao';
@@ -19,13 +18,12 @@ export default class WebviewDeatil extends Component {
         const{ projectModel,flag } = this.params;
         console.log("projectModelde",JSON.stringify(projectModel));
         this.favoriteDao = new FavoriteDao(flag);
-        this.url = TRENDING_URL + projectModel.full_name;
-        const title = projectModel.full_name || projectModel.full_name;
+        this.url = goods_URL + projectModel.goodsNum;
+        const title = projectModel.titGoods;
         this.state = {
             title: title,
             url: this.url,
-            canGoBack: false,
-            isFavorite: projectModel.isFavorite
+            canGoBack: false
         }
         this.backPress = new BackPressComponent({backPress: () => this.onBackPress()})
     }
@@ -44,11 +42,7 @@ export default class WebviewDeatil extends Component {
     }
 
     onBack() {
-        if (this.state.canGoBack) {
-            this.WebView.goBack();
-        } else {
-            NavigatorUtil.goBack(this.props.navigation)
-        }
+        NavigatorUtil.goBack(this.props.navigation)
     }
 
     onFavoriteButtonClick() {
@@ -96,7 +90,6 @@ export default class WebviewDeatil extends Component {
                 titleLayoutStyle = {titleLayoutStyle}
                 title={this.state.title}
                 style={theme.styles.navBar}
-                rightButton = {this.renderRightButton()}
         />
         return (
             <SafeAreaViewPlus

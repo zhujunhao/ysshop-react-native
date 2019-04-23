@@ -10,7 +10,7 @@
      line: {
          height: 0.5,
          opacity: 0.5,
-         backgroundColor: 'darkgray'
+         backgroundColor: '#eee'
      },
      root_container: {
          flex: 1,

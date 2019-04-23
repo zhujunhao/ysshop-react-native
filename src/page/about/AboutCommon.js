@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert,DeviceInfo,View,Text,Image,Dimensions,StyleSheet,Platform,TouchableOpacity} from "react-native";
+import {Alert,DeviceInfo,View,Text,Image,Dimensions,StyleSheet,Platform,TouchableOpacity,AsyncStorage} from "react-native";
 import BackPressComponent from "../../common/BackPressComponent";
 import NavigatorUtil from "../../navigators/NavigatorUtil";
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
@@ -11,8 +11,14 @@ export default class AboutCommon {
     constructor(props,updateState) {
         this.props = props;
         console.log("uspros",JSON.stringify(this.props))
+        this.state = {
+            mobileNum: '',
+        }
+        this.mobileNum = ''
+        this.loginStatusCheck();
         this.updateState = updateState;
         this.backPress = new BackPressComponent({backPress: ()=> this.onBackPress()});
+
     }
 
     onBackPress() {
@@ -44,6 +50,22 @@ export default class AboutCommon {
 
     }
 
+    loginStatusCheck = () => {
+        AsyncStorage.getItem('loginStatus').then((value) => {
+            if (value) {
+                console.log("valParse",value);
+                let valParse = JSON.parse(value)
+                this.mobileNum = valParse.mobileNum
+                this.forceUpdate();
+                
+            } else {
+                
+            }
+        }).catch(() => {
+           
+        });
+    }
+
     componentDidMount() {
         this.backPress.componentDidMount();
         fetch('http://www.devio.org/io/GitHubPopular/json/github_app_config.json')
@@ -70,16 +92,16 @@ export default class AboutCommon {
     }
 
     onShare() {
-        this.DownloadLocalImage('http://a1.qpic.cn/psb?/V14gV2Ft3x6LH8/XjuqZjBhfQHAgCK5nrP8hjD0hCgKOQSGAJJ4X6DHq5Q!/m/dFQBAAAAAAAAnull&bo=OASABwAAAAADB5k!&rf=photolist&t=5')
+        this.DownloadLocalImage('http://a4.qpic.cn/psb?/V14gV2Ft3x6LH8/2GZ4FxekXevFPiZItmK1uGkNTHqNRg9jbTBwd2sCMa0!/m/dL8AAAAAAAAAnull&bo=7gI2BQAAAAARB.8!&rf=photolist&t=5')
     }
 
     gotoLogin(pathName) {
         NavigatorUtil.goPage(this.props,pathName)
     }
 
-    
 
-    getParallaxRenderConfig(params) {
+    getParallaxRenderConfig = (params) => {
+        
         let config = {};
         let avatar = typeof(params.avatar) === 'string' ? {uri: params.avator} : params.avator;
         config.renderBackground = () => (
@@ -102,18 +124,18 @@ export default class AboutCommon {
         )
 
         config.renderForeground = () => (
+            
             <View key="parallax-header" style={styles.parallaxHeader}>
                 <View style={styles.avatar}>
                     <Text style={{color:'#999',fontSize:14}}>悦达人</Text>
                 </View>
-                <TouchableOpacity 
+                {this.mobileNum? <View><Text style={styles.sectionSpeakerText}>{this.mobileNum}</Text></View> : <TouchableOpacity 
                     activeOpacity={1}
                     onPress={()=>this.gotoLogin('LoginPage')}
                 >
-                    <Text style={styles.sectionSpeakerText}>
-                        登录/注册
-                    </Text>
-                </TouchableOpacity>
+                    <Text style={styles.sectionSpeakerText}>登录/注册</Text>
+                </TouchableOpacity>}
+
             </View>
         )
 
@@ -135,6 +157,7 @@ export default class AboutCommon {
     }
 
     render(contentView,params) {
+        console.log("this.mobileNum ",this.mobileNum)
         console.log("this.pPPPs",JSON.stringify(this.props));
         const {theme}= this.props.flagAbout == "about_me" ? this.props.navigation.state.params : this.props;
         const renderConfig = this.getParallaxRenderConfig(params);

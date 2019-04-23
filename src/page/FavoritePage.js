@@ -13,13 +13,12 @@ import EventBus from "react-native-event-bus";
 import EventTypes from "../util/EventTypes";
 import config from '../../res/data/config';
 import AboutCommon from '../page/about/AboutCommon';
-
-
 class FavoritePage extends Component {
     constructor(props) {
         super(props);
         this.backPress = new BackPressComponent({backPress: () => this.onBackPress()})
         this.params = this.props.navigation.state.params;
+       
         this.aboutCommon = new AboutCommon({
                 ...this.props,
                 navigation: this.props.navigation,
@@ -36,15 +35,17 @@ class FavoritePage extends Component {
         this.backPress.componentDidMount();
         this.loadData(true);
         EventBus.getInstance().addListener(EventTypes.bottom_tab_select,this.listener = data => {
-            if(data.to === 2) {
+            if(data.to === 1) {
                 this.loadData(false);
             }
         })
+        
     }
 
     componentWillUnmount() {
         this.backPress.componentWillUnmount();
         EventBus.getInstance().removeListener(this.listener);
+
     }
 
     onBackPress() {
