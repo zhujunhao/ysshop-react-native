@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import { StyleSheet, Text, View, Platform,FlatList, RefreshControl,TouchableOpacity,ActivityIndicator,InteractionManager } from 'react-native';
+import { StyleSheet, Text, View, Platform,FlatList, RefreshControl,TouchableOpacity,ActivityIndicator,InteractionManager,AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import actions from '../../action/index';
 import { createMaterialTopTabNavigator,createAppContainer } from 'react-navigation';
@@ -14,8 +14,10 @@ import FavoriteUtil from '../util/FavoriteUtil';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FavoriteDao from '../ask/FavoriteDao';
 import SwiperArr from '../common/swiper/swiper';
+import { configurationUrl } from '../ask/config';
+
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.Collection);
-const URL = 'https://www.yuegomall.com/api/v0/lists';
+const URL = configurationUrl + '/api/v0/lists';
 
 class RecommendPage extends Component {
     constructor(props) {
@@ -102,6 +104,23 @@ class RecommendTab extends Component {
         this.storeName = path;
         console.log("sn",this.storeName)
         this.isFavoriteChanged = false;
+        this.loginStatusCheck()
+    }
+
+    loginStatusCheck () {
+        AsyncStorage.getItem('loginStatus').then((loginstatus) => {
+            let loginstatusObj = JSON.parse(loginstatus)
+            console.log("value",typeof loginstatusObj)
+            if (loginstatusObj.StatusCode == "0000") {
+                console.log("djhfjdhf")
+
+                console.log("this.propsssdfdfd",JSON.stringify(this.props))
+                const { onLoginChange } = this.props;
+                onLoginChange(loginstatusObj)
+            }
+        }).catch((err) => {
+            
+        });
     }
 
     componentDidMount(){
@@ -288,6 +307,7 @@ const mapDispatchToProps = dispatch => ({
     onRefreshRecommend: (storeName, url, pageSize, favoriteDao) => dispatch(actions.onRefreshRecommend(storeName, url, pageSize, favoriteDao)),
     onLoadMoreRecommend: (storeName, pageIndex, pageSize, items, favoriteDao, callBack) => dispatch(actions.onLoadMoreRecommend(storeName, pageIndex, pageSize, items, favoriteDao, callBack)),
     onFlushRecommendFavorite: (storeName, pageIndex, pageSize, items, favoriteDao) => dispatch(actions.onFlushRecommendFavorite(storeName, pageIndex, pageSize, items, favoriteDao)),
+    onLoginChange: (loginstatus) => dispatch(actions.onLoginChange(loginstatus))
 })
 
 //注意：connect只是个function，并不应定非要放在export后面

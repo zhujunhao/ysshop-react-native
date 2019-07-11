@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet,TouchableOpacity, View, DeviceInfo,Text,Image,FlatList,ScrollView } from 'react-native';
+import { StyleSheet,TouchableOpacity, View,Clipboard, DeviceInfo,Text,Image,FlatList,ScrollView,Linking  } from 'react-native';
 import { FLAG_STORAGE } from '../ask/DataStore';
 import { connect } from 'react-redux';
 import actions from '../../action/index';
@@ -12,14 +12,18 @@ import NavigatorUtil from '../navigators/NavigatorUtil';
 import BackPressComponent from '../common/BackPressComponent';
 import FavoriteUtil from '../util/FavoriteUtil';
 import FavoriteDao from '../ask/FavoriteDao';
+import DataStore from "../../src/ask/DataStore";
+import Toast from 'react-native-easy-toast';
+import { configurationUrl } from '../ask/config';
+
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.Collection);
-const URL = 'https://www.yuegomall.com/api/v0/lists';
+const URL = configurationUrl + '/api/v0/lists';
 const pageSize = 10;//设为常量，防止修改
 
 class DetailPage extends Component {
     constructor(props) {
         super(props);
-        console.log("propldel",JSON.stringify(this.props));
+        console.log("propldelde",JSON.stringify(this.props));
         this.params = this.props.navigation.state.params;
         const{ projectModel,flag } = this.params;
         console.log("projectModelde",JSON.stringify(projectModel));
@@ -152,6 +156,36 @@ class DetailPage extends Component {
         }
     }
 
+    reqlink (goodsID,goType) {
+        let dataStore = new DataStore();
+        let url = configurationUrl + '/api/v0/links/reqLinks';
+        let data={'goodsID':goodsID};
+        console.log("0",JSON.stringify(goodsID))
+        dataStore.postJson(url,data,(set) => {
+            console.log(JSON.stringify(set))
+            if (set.success == true) {
+                console.log("modelData",JSON.stringify(set.modelData))
+                this.copy(set.modelData,goType)
+            } else {
+                this.refs.toast.show('请求信息有误');
+            }
+        });
+    }
+
+    async copy(targetText,goType){
+        console.log("targetText",targetText)
+        Clipboard.setString(targetText);
+        let  str = await Clipboard.getString();
+        if (goType == 'goShop') {
+            this.refs.toast.show('打开淘宝APP领取优惠吧');
+            let url = 'taobao://www.taobao.com';
+            Linking.openURL(url) 
+        } else {
+            this.refs.toast.show('已复制到粘贴板');
+        }
+        console.log('str',str)//我是文本
+    }
+
     onFavoriteButtonClick() {
         const{ projectModel,callback } = this.params;
         const isFavorite = projectModel.isFavorite=!projectModel.isFavorite;
@@ -203,7 +237,6 @@ class DetailPage extends Component {
     }
 
     renderItem(data) {
-        console.log("tardara",JSON.stringify(data))
         const { item } = data;
         console.log("tarfet",JSON.stringify(item))
         const { theme } = this.params;
@@ -216,12 +249,18 @@ class DetailPage extends Component {
                     projectModel: item,
                     flag: FLAG_STORAGE.Collection,
                     callback
-                },'relativePage')
+                },'DetailPage')
             }}
             onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite)}
         />
         
     }
+
+    backHome = () => {
+        NavigatorUtil.resetToHomePage({
+            navigation: this.props.navigation
+        })
+      }
 
     onNavigationStateChange(navState) {
         this.setState({
@@ -268,6 +307,7 @@ class DetailPage extends Component {
                                 <Text>{`月销量${projectModel.item.monthNum}`}</Text>
                             </View>
                         </View>
+                        <View style={{flex:1,height:10,backgroundColor:'#f5f5f5'}}></View>
                         <View style={styles.topic}>
                             <Text style={styles.topicHead}>-----  相关推荐  -----</Text>
                             <FlatList
@@ -277,10 +317,57 @@ class DetailPage extends Component {
                                 horizontal={true}
                                 showsHorizontalScrollIndicator={false}
                             />
+                            <View style={{height:40}}></View>
                         </View>
                     </View>
+                    <Toast ref={'toast'}
+                        position={'center'}
+                    />
                 </ScrollView>
-
+                
+                <View style={{flex:1,height:51,flexDirection:'column',position: 'absolute',bottom: 0,left:0,right:0}}>
+                    <View style={{height:1,backgroundColor:'#eee'}}></View>
+                    <View style={{flex:1,flexDirection:'row',height:50,opacity:1,backgroundColor:'#fff',alignItems:'center'}}>
+                        <View style={{flex:1}}>
+                            <TouchableOpacity onPress={()=>this.backHome()} activeOpacity={1}>
+                                <View style={{width:60,height:36,marginTop:7,marginBottom:7,flexDirection:'column',backgroundColor:'#fff',justifyContent:'center',alignItems:'center'}}>
+                                    <AntDesign
+                                        name={'home'}
+                                        size={20}
+                                        style={{color:'#777'}}
+                                    />
+                                    <Text style={{color:'#777',fontSize:10}}>首页</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <TouchableOpacity
+                            onPress={()=>this.reqlink(projectModel.item.goodsNum,'goShop')}
+                            activeOpacity={1}
+                        >
+                            <View style={{width:120,height:36,marginTop:7,marginBottom:7,marginRight:7,flexDirection:'row',backgroundColor:theme.themeColor,justifyContent:'center',alignItems:'center',borderRadius:18}}>
+                                <AntDesign
+                                    name={'gift'}
+                                    size={20}
+                                    style={{color:'#fff',marginRight:10}}
+                                />
+                                <Text style={{color:'#fff',fontSize:14}}>领券购买</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={()=>this.reqlink(projectModel.item.goodsNum,'shareGoods')}
+                            activeOpacity={1}
+                        >
+                            <View style={{width:120,height:36,marginTop:7,marginBottom:7,marginRight:7,flexDirection:'row',backgroundColor:'#ff4800',justifyContent:'center',alignItems:'center',borderRadius:18}}>
+                                <AntDesign
+                                    name={'export'}
+                                    size={20}
+                                    style={{color:'#fff',marginRight:10}}
+                                />
+                                <Text style={{color:'#fff',fontSize:14}}>复制分享</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </SafeAreaViewPlus>
         )
     }

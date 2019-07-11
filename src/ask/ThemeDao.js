@@ -17,9 +17,15 @@ export default class ThemeDao {
                 }
                 if (!result) {
                     this.save(ThemeFlags.Default);
-                    result = ThemeFlags.Default;
+                    resolve(data)
+                    //result = ThemeFlags.Default;
                 }
-                resolve(ThemeFactory.createTheme(result))
+                //resolve(ThemeFactory.createTheme(result))
+                try {
+                    resolve(JSON.parse(result));
+                } catch (e) {
+                    reject(error);
+                }
             })
         })
     }

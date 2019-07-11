@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import {onThemeChange} from '../../action/theme';
-import { ScrollView, StyleSheet, Text, View,Image,TouchableOpacity,AsyncStorage} from 'react-native';
+import { ScrollView, StyleSheet, Text, View,TouchableOpacity,AsyncStorage} from 'react-native';
 import NavigatorUtil from '../navigators/NavigatorUtil';
 import NavigatorBar from '../common/NavigationBar';
 import { MORE_MENU } from '../common/MORE_MENU';
@@ -12,32 +11,22 @@ import actions from "../../action";
 class MyPage extends Component {
   constructor(props){
       super(props);
-      this.mobileNum = '';
-      this.checkLogin();
       this.backPress = new BackPressComponent({backPress: () => this.onBackPress()})
   }
 
   LoginOutDel = () => {
+    let loginOutObj = {
+        'mobileNum': '',
+        'accessToken': '',
+        'invitationCode': '',       //邀请码
+        'StatusCode': '0001'
+    }
+    const { onLoginChange } = this.props;
+    onLoginChange(loginOutObj)
     AsyncStorage.removeItem('loginStatus');
     NavigatorUtil.resetToHomePage({
         navigation: this.props.navigation
     })
-  }
-
-  checkLogin = () => {
-    AsyncStorage.getItem('loginStatus').then((value) => {
-        if (value) {
-            console.log("valParsein",value);
-            let valParse = JSON.parse(value)
-            this.mobileNum = valParse.mobileNum
-            this.forceUpdate();
-            
-        } else {
-            
-        }
-    }).catch(() => {
-       
-    });
   }
 
   onClick = (menu)=> {
@@ -109,7 +98,8 @@ class MyPage extends Component {
     }
 
   render() {
-    const {theme} = this.props;
+    const {theme,loginstatus} = this.props;
+    console.log("setpage",JSON.stringify(this.props))
     let navigatorBar = <NavigatorBar
                             leftButton = {ViewUtil.getLeftBackButton( () => NavigatorUtil.goBack(this.props.navigation) )}
                             title = {'设置'}
@@ -121,16 +111,20 @@ class MyPage extends Component {
             {navigatorBar}
             <ScrollView>
                 <View style={GlobalStyles.line}/>
+                {/* 判断是否为登录 */}
+                {loginstatus.mobileNum?this.getItem(MORE_MENU.MyInfo):<View></View>}
+                {loginstatus.mobileNum?<View style={GlobalStyles.line}/>:<View></View>}
                 {this.getItem(MORE_MENU.Selcategory)}
                 <View style={GlobalStyles.line}/>
                 {this.getItem(MORE_MENU.Sortcategory)}
-                <View style={GlobalStyles.line}/>
+                <View style={{flex:1,height:16,backgroundColor:'#eee',opacity:0.5}}></View>
                 {this.getItem(MORE_MENU.AboutUs)}
                 <View style={GlobalStyles.line}/>
                 {this.getItem(MORE_MENU.Contactus)}
                 <View style={GlobalStyles.line}/>
-                {this.mobileNum?<TouchableOpacity style={styles.out}
+                {loginstatus.mobileNum?<TouchableOpacity style={styles.out}
                     onPress={() => this.LoginOutDel()}
+                    activeOpacity={1}
                 >
                     <Text style={styles.outText}>退出登录</Text>
                 </TouchableOpacity> : <View></View>}
@@ -143,11 +137,13 @@ class MyPage extends Component {
 
 
 const mapStateToProps = state => ({
-    theme: state.theme.theme
+    theme: state.theme.theme,
+    loginstatus: state.loginstatus
 })
 
 const mapDispatchToProps = dispatch => ({
-    onShowCustomThemeView: (show) => dispatch(actions.onShowCustomThemeView(show))
+    onShowCustomThemeView: (show) => dispatch(actions.onShowCustomThemeView(show)),
+    onLoginChange: (loginstatus) => dispatch(actions.onLoginChange(loginstatus))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(MyPage)

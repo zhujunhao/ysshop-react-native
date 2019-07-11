@@ -5,6 +5,7 @@ import ThemeDao from '../../src/ask/ThemeDao';
  * 主题变更
  */
 export function onThemeChange(theme) {
+    console.log("themeIndex",JSON.stringify(theme));
     return {type: Types.THEME_CHANGE,theme: theme}
 }
 

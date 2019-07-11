@@ -8,7 +8,6 @@ import FavouriteItem from '../common/FavouriteItem';
 import NavigationBar from '../common/NavigationBar';
 import {FLAG_STORAGE} from '../ask/DataStore';
 import Toast from 'react-native-easy-toast'
-import Utils from "../util/Utils";
 import ViewUtil from '../util/ViewUtil';
 import BackPressComponent from '../common/BackPressComponent';
 import FavoriteDao from '../ask/FavoriteDao';
@@ -19,7 +18,6 @@ const pageSize = 10;//设为常量，防止修改
 class SearchPage extends Component {
     constructor(props) {
         super(props);
-        console.log("searchprosp",JSON.stringify(this.props))
         this.params = this.props.navigation.state.params;
         this.backPress = new BackPressComponent({backPress: () => this.onBackPress()})
         this.historyView();
@@ -45,21 +43,19 @@ class SearchPage extends Component {
         NavigatorUtil.goBack(this.props.navigation)
     }
 
-    loadData(loadMore,searchVal) {
+    loadData = (loadMore,searchVal) => {
         const {onLoadMoreSearch, onSearch, search, keys} = this.props;
-        console.log("searchprops",JSON.stringify(this.props))
-        console.log("keys",keys)
         if (loadMore) {
-            onLoadMoreSearch(++search.pageIndex, pageSize, search.items, this.favoriteDao,callback => {
+            onLoadMoreSearch(++search.pageIndex, pageSize, search.items, new FavoriteDao(FLAG_STORAGE.Collection),callback => {
                 this.refs.toast.show('没有更多了');
             })
             // 点击历史记录
         } else if (searchVal) {
-            onSearch(searchVal, pageSize, this.searchToken = new Date().getTime(), this.favoriteDao, keys, message => {
+            onSearch(searchVal, pageSize, this.searchToken = new Date().getTime(), new FavoriteDao(FLAG_STORAGE.Collection), keys, message => {
                 this.refs.toast.show(message);
             })
         } else {
-            onSearch(this.inputKey, pageSize, this.searchToken = new Date().getTime(), this.favoriteDao, keys, message => {
+            onSearch(this.inputKey, pageSize, this.searchToken = new Date().getTime(), new FavoriteDao(FLAG_STORAGE.Collection), keys, message => {
                 this.refs.toast.show(message);
             })
         }
@@ -127,7 +123,7 @@ class SearchPage extends Component {
         }
     }
 
-    renderNavBar(historyVal) {
+    renderNavBar() {
         const {showText, inputKey} = this.props.search;
         const placeholder = inputKey || "请输入您想购买的商品名称";
         
@@ -163,9 +159,6 @@ class SearchPage extends Component {
     }
 
     onItemClick (data,index) {
-
-        console.log("datae",JSON.stringify(data))
-        console.log("index",JSON.stringify(index))
         this.onRightButtonClick(data);
     }
 
@@ -198,7 +191,6 @@ class SearchPage extends Component {
     }
 
     viewsArr = () => {
-        console.log("historyStr123",this.state.historyStr)
         let views = [];
         
         if (this.state.historyStr) {
@@ -210,9 +202,7 @@ class SearchPage extends Component {
             views.push(<View style={{height:40,marginTop:10,justifyContent:'center',marginLeft:16}}>
                 <Text >历史搜索</Text>
             </View>)
-            console.log("viewsArrres",JSON.stringify(values))
             for (let i = 0, len = values.length; i < len; i+=5) {
-                console.log('ioioioio')
                 views.push(
                     <View key={i}>
                         <View style={styles.historyitem}>
@@ -241,7 +231,6 @@ class SearchPage extends Component {
             title={'搜索'}
             style={theme.styles.navBar}
         />
-        console.log("projectModels11",JSON.stringify(projectModels));
 
         let listView = <FlatList
                 data={projectModels}

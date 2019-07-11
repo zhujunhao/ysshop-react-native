@@ -6,7 +6,11 @@ import favorite from './favorite';
 import theme from './Theme';
 import ydr from './Ydr';
 import relative from './relative';
+import loginstatus from './LoginStatus';
+import invitePartners from './InvitePartners';
+import myinfo from './Myinfo';
 import {rootCom, RootNavigator} from '../src/navigators/AppNavigator';
+
 
 //1.指定默认state
 const navState = RootNavigator.router.getStateForAction(RootNavigator.router.getActionForPathAndParams(rootCom));
@@ -32,6 +36,9 @@ const index = combineReducers({
     favorite : favorite,
     theme : theme,
     ydr : ydr,
-    relative : relative
+    relative : relative,
+    invitePartners : invitePartners,
+    loginstatus : loginstatus,
+    myinfo : myinfo
 })
 export default index;

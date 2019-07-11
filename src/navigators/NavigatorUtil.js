@@ -41,4 +41,13 @@ export default class NavigatorUtil {
         navigation.navigate("SliderImg");
     }
 
+    /**
+     * 重置到我的
+     */
+
+    static resetToFavoritePage(params) {
+        const { navigation } = params;
+        navigation.navigate("FavoritePage");
+    }
+
 }

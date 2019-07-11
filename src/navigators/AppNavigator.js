@@ -11,7 +11,6 @@ import MyPage from '../page/MyPage';
 import ChangemobPage from '../page/ChangemobPage';
 import MyinfoPage from '../page/MyinfoPage';
 import Aboutus from '../page/Aboutus';
-import AboutMePage from '../page/about/AboutMePage';
 import AboutPage from '../page/AboutPage';
 import relativePage from '../page/relativePage';
 import DetailPage from '../page/DetailPage';
@@ -21,6 +20,7 @@ import CodePushPage from '../page/CodePushPage';
 import WebviewDeatil from '../page/WebviewDeatil';
 import ContactusPage from '../page/Contactus';
 import SortcategoryPage from '../page/SortcategoryPage';
+import InvitePartnersPage from '../page/InvitePartnersPage';
 import YdrPage from '../page/YdrPage';
 import { connect } from 'react-redux';
 import {createReactNavigationReduxMiddleware, reduxifyNavigator} from 'react-navigation-redux-helpers';
@@ -97,12 +97,6 @@ const MainNavigator = createStackNavigator({
         header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
       } 
     },
-    AboutMePage: {
-      screen: AboutMePage,
-      navigationOptions: {
-        header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
-      } 
-    },
     ContactusPage: {
       screen: ContactusPage,
       navigationOptions: {
@@ -147,6 +141,12 @@ const MainNavigator = createStackNavigator({
     },
     CodePushPage: {
       screen:CodePushPage,
+      navigationOptions: {
+        header: null
+      }      
+    },
+    InvitePartnersPage: {
+      screen:InvitePartnersPage,
       navigationOptions: {
         header: null
       }      

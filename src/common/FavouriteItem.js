@@ -17,7 +17,8 @@ export default class FavouriteItem extends BaseItem {
                 <View style={styles.cell_container}>
                     <View style={{height: 100, width: 100,borderRadius:6,borderWidth:1,borderColor:'#eee'}}>
                         <Image style={{height: 98, width: 98,borderRadius:6}}
-                                source={{uri: item.picGoods}}
+                            defaultSource={require('../../res/backgroundPic.png')} //默认图片
+                            source={{uri: item.picGoods}}
                         />
                     </View>
                     <View style={{flex:1,marginLeft:10,flexDirection:'column'}}>
@@ -25,25 +26,20 @@ export default class FavouriteItem extends BaseItem {
                             {item.titGoods}
                         </Text>
                         <View style={styles.row}>
-                            <View style={{flexDirection:'row',width:60,height:18,borderColor:theme.themeColor,borderWidth:1,borderRadius:4}}>
-                                <View style={{alignItems:'center',justifyContent:'center',padding:5,backgroundColor:theme.themeColor}}>
-                                    <Text style={{color:'#fff',fontSize:12}}>券</Text>
-                                </View>
-                                <View style={{height:16,width:1,backgroundColor:theme.themeColor}}></View>
-                                <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                                    <Text style={{color:theme.themeColor,fontSize:12}}>{`${item.CouponNum}元`}</Text>
-                                </View>
+                            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',width:60,height:20,borderColor:theme.themeColor,backgroundColor:theme.themeColor,borderWidth:1,borderRadius:10}}>
+                                <Text style={{color:'#fff',fontSize:12}}>{`券${item.CouponNum}元`}</Text>
                             </View>
-                            <Text style={{fontSize:12}}>{`月销量${item.monthNum}`}</Text>
+                            <View style={{flex:1}}></View>
+                            <Text style={{fontSize:12,color:'#9d9d9d',marginRight:5}}>{`月销${item.monthNum}`}</Text>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.row}>
-                                <Text style={{fontSize:14}}>券后￥:</Text>
-                                <Text style={{fontSize:16,fontWeight:'bold',color:'#666'}}>{item.qhjGoods}</Text>
+                                <Text style={{fontSize:12}}>券后￥:</Text>
+                                <Text style={{fontSize:18,fontWeight:'bold',color:'#666'}}>{item.qhjGoods}</Text>
+                                <Text style={{fontSize:10,textDecorationLine:'line-through',color:'#999',marginLeft:5}}>{item.oriPrice}</Text>
                             </View>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                <Text style={{fontSize:10,textDecorationLine:'line-through',color:'#999'}}>{item.oriPrice}</Text>
-                            </View>
+                            <View style={{flex:1}}></View>
+                            <Text style={{fontSize:10,color:'#9d9d9d'}}>收藏</Text>
                             {this._favoriteIcon()}
                         </View>
                     </View>
@@ -73,7 +69,6 @@ const styles = StyleSheet.create({
         },
         row: {
             height:30,
-            justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center',
         },

@@ -1,11 +1,14 @@
 
-import {onRefreshRecommend, onLoadMoreRecommend, onFlushRecommendFavorite} from './recommend';
-import {onSearch,onLoadMoreSearch,onSearchCancel } from './search';
+import { onRefreshRecommend, onLoadMoreRecommend, onFlushRecommendFavorite} from './recommend';
+import { onSearch,onLoadMoreSearch,onSearchCancel } from './search';
 import { onLoadCategory } from './category';
 import { onLoadFavoriteData } from './favorite';
-import { onRefreshYdr,onLoadMoreYdr,onFlushYdrFavorite } from './ydr'
+import { onRefreshYdr,onLoadMoreYdr,onFlushYdrFavorite } from './ydr';
 import { onThemeChange, onShowCustomThemeView, onThemeInit } from './theme';
 import { onRefreshRelative, onLoadMoreRelative, onFlushRelativeFavorite } from './relative';
+import { onLoginChange } from './loginStatus';
+import { onRefreshInvite, onLoadMoreInvite } from './InvitePartners';
+import { onLoadMyInfo } from './myInfo';
 
 export default {
     onRefreshRecommend,
@@ -24,5 +27,9 @@ export default {
     onFlushYdrFavorite,
     onRefreshRelative,
     onLoadMoreRelative,
-    onFlushRelativeFavorite
+    onFlushRelativeFavorite,
+    onLoginChange,
+    onRefreshInvite,
+    onLoadMoreInvite,
+    onLoadMyInfo
 }

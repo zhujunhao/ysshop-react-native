@@ -7,8 +7,6 @@ import BackPressComponent from '../common/BackPressComponent';
 import actions from "../../action";
 import CustomTheme from "../page/CustomTheme";
 import SafeAreaViewPlus from '../common/SafeAreaViewPlus';
-
-
 class HomePage extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +23,6 @@ class HomePage extends Component {
 
     onBackPress = () => {
         const {dispatch, nav} = this.props;
-        //if (nav.index === 0) {
         if (nav.routes[1].index === 0) {//如果RootNavigator中的MainNavigator的index为0，则不处理返回事件
             return false;
         }
@@ -43,7 +40,7 @@ class HomePage extends Component {
     }
 
     render() {
-        const {theme} = this.props;
+        const { theme } = this.props;
         NavigationUtil.navigation = this.props.navigation;
         return <SafeAreaViewPlus
             topColor={theme.themeColor}

@@ -6,7 +6,6 @@ import {Dimensions} from "react-native";
 export default class RecommendItem extends BaseItem {
     render() {
         const {projectModel,theme} = this.props;
-        console.log("popo125",JSON.stringify(this.props))
         const {item} = projectModel;
         if (!item || !item.goodsNum) return null;
         return (
@@ -17,6 +16,7 @@ export default class RecommendItem extends BaseItem {
                 <View style={styles.cell_container}>
                     <View style={styles.ImagePart}>
                         <Image style={styles.picPart}
+                            defaultSource={require('../../res/backgroundPic.png')} //默认图片
                             source={{uri: item.picGoods}}
                         />
                     </View>
@@ -24,22 +24,24 @@ export default class RecommendItem extends BaseItem {
                         {item.titGoods}
                     </Text>
                     <View style={styles.row}>
-                        <View style={{flexDirection:'row',width:60,height:16,borderColor:theme.themeColor,borderWidth:1,borderRadius:4}}>
-                            <View style={{alignItems:'center',justifyContent:'center',padding:5,backgroundColor:theme.themeColor}}>
-                                <Text style={{color:'#fff',fontSize:10}}>券</Text>
+                        <TouchableOpacity
+                            onPress={()=>this.dialog.show()}
+                            activeOpacity={1}
+                        >
+                            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',width:60,height:20,borderColor:theme.themeColor,backgroundColor:theme.themeColor,borderWidth:1,borderRadius:10}}>
+                                <Text style={{color:'#fff',fontSize:10}}>{`券${item.CouponNum}元`}</Text>
                             </View>
-                            <View style={{height:14,width:1,backgroundColor:theme.themeColor}}></View>
-                            <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                                <Text style={{color:theme.themeColor,fontSize:10}}>{`${item.CouponNum}元`}</Text>
-                            </View>
-                        </View>
-                        <Text style={{fontSize:10}}>{`月销量${item.monthNum}`}</Text>
+                        </TouchableOpacity>
+                        <View style={{flex:1}}></View>
+                        <Text style={{fontSize:10,color:'#9d9d9d',marginRight:5}}>{`月销${item.monthNum}`}</Text>
                     </View>
                     <View style={styles.row}>
                         <View style={{height:30,flexDirection: 'row',alignItems:'center'}}>
-                            <Text style={{fontSize:12}}>券后￥:</Text>
+                            <Text style={{fontSize:10}}>券后￥:</Text>
                             <Text style={{fontSize:14,fontWeight:'bold',color:'#666'}}>{item.qhjGoods}</Text>
                         </View>
+                        <View style={{flex:1}}></View>
+                        <Text style={{fontSize:10,color:'#9d9d9d'}}>收藏</Text>
                         {this._favoriteIcon()}
                     </View>
                 </View>
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
             paddingBottom: 10,
             marginLeft: scaleWidth(6),
             marginRight: scaleWidth(6),
+            marginBottom: scaleWidth(10),
             marginVertical: 3,
             borderColor: '#dddddd',
             borderWidth: 0.5,
@@ -81,12 +84,11 @@ const styles = StyleSheet.create({
             flex:1
         },
         row: {
-            justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center',
-            marginTop:5,
-            paddingLeft:8,
-            paddingRight:8,
+            marginTop:8,
+            paddingLeft:6,
+            paddingRight:6,
             height:20
         },
         title: {

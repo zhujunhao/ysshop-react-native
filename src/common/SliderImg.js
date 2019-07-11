@@ -33,23 +33,23 @@ class SliderImg extends Component {
                     loop={this.state.loop}
                 >
                     <View style={styles.slide}>
-                        <Image style={styles.img} source={require('../../res/i6-2.jpg')}></Image>
+                        <Image style={styles.img} source={require('../../res/guide124222081.png')}></Image>
                     </View>
                     <View style={styles.slide}>
-                        <Image style={styles.img} source={require('../../res/i6-3.jpg')}></Image>
+                        <Image style={styles.img} source={require('../../res/guide124222082.png')}></Image>
                     </View>
                     <View style={styles.slide}>
-                        <Image style={styles.img} source={require('../../res/i6-4.jpg')}></Image>
+                        <Image style={styles.img} source={require('../../res/guide124222083.png')}></Image>
                     </View>
                     <View style={styles.slide}>
-                        <Image style={styles.img} source={require('../../res/i6-5.jpg')}></Image>
+                        <Image style={styles.img} source={require('../../res/guide124222084.png')}></Image>
                         <TouchableOpacity
                             style={styles.enterbtn}
                             onPress={() => this.goHome()}
                             activeOpacity={1}
                         >
                             <View >
-                                <Text style={{color:'#999',fontSize:13}}>马上体验</Text>
+                                <Text style={{color:'#414141',fontSize:13}}>马上体验</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -77,37 +77,37 @@ const styles = StyleSheet.create({
       width: width 
     },
     dot: {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
+        width: 8,
+        height: 8,
+        borderRadius: 4,
         borderWidth: 1,
         backgroundColor: 'transparent',
         borderColor: '#ccc',
-        marginLeft: 12,
-        marginRight: 12
+        marginLeft: 10,
+        marginRight: 10
     },
     activeDot: {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
+        width: 8,
+        height: 8,
+        borderRadius: 4,
         borderWidth: 1,
-        backgroundColor: '#ff4800',
-        borderColor: '#ff4800',
-        marginLeft: 12,
-        marginRight: 12
+        backgroundColor: '#414141',
+        borderColor: '#414141',
+        marginLeft: 10,
+        marginRight: 10
     },
     pagination: {
-        bottom: 30
+        bottom: 16
     },
     enterbtn: {
-        width: 160,
+        width: 120,
         position: 'absolute',
-        left: width/2-80,
-        bottom: 60,
-        height: 38,
+        left: width/2-60,
+        bottom: 40,
+        height: 36,
         padding: 10,
         backgroundColor: '#fff',
-        borderColor: '#999',
+        borderColor: '#414141',
         borderWidth: 0.5,
         borderRadius: 19,
         alignItems: 'center',

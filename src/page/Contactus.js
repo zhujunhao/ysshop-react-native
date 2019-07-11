@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {View, Text, Image, Clipboard, TouchableWithoutFeedback, TouchableOpacity, Linking} from 'react-native';
+import {View, Text, Image, Clipboard, TouchableOpacity, Linking} from 'react-native';
 import NavigatorUtil from '../navigators/NavigatorUtil';
-import GlobalStyles from '../ask/styles/GlobalStyles';
 import BackPressComponent from '../common/BackPressComponent';
 import Toast from 'react-native-easy-toast';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -19,9 +18,11 @@ export default class ContactusPage extends Component {
         this.params = this.props.navigation.state.params;
         this.state = {
             coptext:'Mr_zhu2013',
+            yxqq:'2210766286',
             consigneePhone: '15626489860',
             email: '15626489860@163.com',
-            sms: '15626489860'
+            sms: '15626489860',
+            ysemail: '2210766286@qq.com'
         }
     };
 
@@ -48,6 +49,8 @@ export default class ContactusPage extends Component {
             url = 'sms: ' + this.state.sms;
         } else if (typeName == 'email') {
             url = 'mailto: ' + this.state.email;
+        } else if (typeName == 'yxemail') {
+            url = 'mailto: ' + this.state.ysemail;
         }
         Linking.canOpenURL(url).then(supported => {
             if (!supported) {
@@ -65,6 +68,13 @@ export default class ContactusPage extends Component {
         console.log(str)//我是文本
     }
 
+    async yxcopy(){
+        Clipboard.setString(this.state.yxqq);
+        this.refs.toast.show('已经复制到粘贴板');
+        let  str = await Clipboard.getString();
+        console.log(str)//我是文本
+    }
+
     render() {
         const { theme } = this.params;
         const { coptext } = this.state;
@@ -76,24 +86,30 @@ export default class ContactusPage extends Component {
         
         const content = <View>
             <View style={{flex:1,alignItems:'center',flexDirection:'column'}}>
-                <Image
-                    resizeMode={('contain')}
-                    style={{width:200,height:200,marginTop:100}}
-                    source={require('../../res/aboutme.png')}
-                ></Image>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{marginTop:20,fontSize:13}}>微信号：</Text>
-                    <Text style={{marginTop:20,fontSize:13}}>{coptext}</Text>
+                <View style={{height:80,marginTop:46, alignItems:'center'}}>
+                    <Image style={{height: 80, width: 80}}
+                        source={require('../../res/ydrlogo.png')}
+                    />
                 </View>
-                <TouchableWithoutFeedback onPress={this.copy.bind(this)}>
-                    <View style={{width:60,height:20,alignItems:'center',backgroundColor:theme.themeColor,borderRadius:10,marginTop:10,justifyContent:'center'}}>
-                        <Text style={{fontSize:13,color:"#fff"}}>复制</Text>
-                    </View>
-                </TouchableWithoutFeedback>
-                <View style={{flexDirection:'row',height:60,alignItems:'center'}}>
-                    <Text style={{marginTop:20,fontSize:13}}>------   更多联系方式   ------</Text>
+                <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center',height:40,marginTop:80}}>
+                    <Text style={{fontSize:13,fontWeight:'bold'}}>小猪</Text>
+                    <View style={{width:2,height:14,marginRight:10,marginLeft:10,backgroundColor:theme.themeColor,borderRadius:1}}></View>
+                    <Text style={{fontSize:13}}>开发工程师</Text>
                 </View>
-                <View style={{flex:1,height:60,flexDirection:'row',}}>
+
+                <View style={{flex:1,height:60,flexDirection:'row',marginTop:20}}>
+                    <TouchableOpacity
+                        style={{width:38,height:38,alignItems:'center',justifyContent:'center'}}
+                        onPress={this.copy.bind(this)}
+                        activeOpacity={1}
+                    >
+                        <AntDesign
+                            name={'wechat'}
+                            size={20}
+                            style={{color:'#999',marginRight: 6,marginTop: 20}}
+                        />
+                    </TouchableOpacity>
+                    <View style={{width:13}}></View>
                     <TouchableOpacity
                         style={{width:38,height:38,alignItems:'center',justifyContent:'center'}}
                         onPress={()=>this.onItemClick("mobile")}
@@ -105,7 +121,7 @@ export default class ContactusPage extends Component {
                             style={{color:'#999',marginRight: 6,marginTop: 20}}
                         />
                     </TouchableOpacity>
-                    <View style={{width:20}}></View>
+                    <View style={{width:13}}></View>
                     <TouchableOpacity
                         style={{width:38,height:38,alignItems:'center',justifyContent:'center'}}
                         onPress={()=>this.onItemClick("message")}
@@ -117,10 +133,40 @@ export default class ContactusPage extends Component {
                             style={{color:'#999',marginRight: 6,marginTop: 20}}
                         />
                     </TouchableOpacity>
-                    <View style={{width:20}}></View>
+                    <View style={{width:13}}></View>
                     <TouchableOpacity
                         style={{width:38,height:38,alignItems:'center',justifyContent:'center'}}
                         onPress={()=>this.onItemClick("email")}
+                        activeOpacity={1}
+                    >
+                        <AntDesign
+                            name={'mail'}
+                            size={20}
+                            style={{color:'#999',marginRight: 6,marginTop: 20}}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center',height:40,marginTop:80}}>
+                    <Text style={{fontSize:13,fontWeight:'bold'}}>小丑鱼</Text>
+                    <View style={{width:2,height:14,marginRight:10,marginLeft:10,backgroundColor:theme.themeColor,borderRadius:1}}></View>
+                    <Text style={{fontSize:13}}>UI设计师</Text>
+                </View>
+                <View style={{flex:1,height:60,flexDirection:'row',marginTop:20}}>
+                    <TouchableOpacity
+                        style={{width:38,height:38,alignItems:'center',justifyContent:'center'}}
+                        onPress={this.yxcopy.bind(this)}
+                        activeOpacity={1}
+                    >
+                        <AntDesign
+                            name={'QQ'}
+                            size={20}
+                            style={{color:'#999',marginRight: 6,marginTop: 20}}
+                        />
+                    </TouchableOpacity>
+                    <View style={{width:20}}></View>
+                    <TouchableOpacity
+                        style={{width:38,height:38,alignItems:'center',justifyContent:'center'}}
+                        onPress={()=>this.onItemClick("yxemail")}
                         activeOpacity={1}
                     >
                         <AntDesign

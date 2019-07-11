@@ -1,24 +1,21 @@
 import React from 'react';
-import {Alert,DeviceInfo,View,Text,Image,Dimensions,StyleSheet,Platform,TouchableOpacity,AsyncStorage} from "react-native";
+import {Alert,DeviceInfo,View,Text,Image,Dimensions,StyleSheet,Platform,TouchableOpacity,Clipboard} from "react-native";
 import BackPressComponent from "../../common/BackPressComponent";
 import NavigatorUtil from "../../navigators/NavigatorUtil";
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import GlobalStyles from '../../ask/styles/GlobalStyles.js';
 import Imgshare from "../../common/Imgshare";
 import ViewUtil from '../../util/ViewUtil.js';
+import Toast from 'react-native-easy-toast';
 export const FLAG_ABOUT = {flag_about: 'about',flag_about_me:'about_me'};
 export default class AboutCommon {
-    constructor(props,updateState) {
+    constructor(props,updateState,loginstatus) {
+        console.log("common",JSON.stringify(props))
+        console.log("commonloginstatus",JSON.stringify(loginstatus))
+        console.log("updateState",JSON.stringify(updateState))
         this.props = props;
-        console.log("uspros",JSON.stringify(this.props))
-        this.state = {
-            mobileNum: '',
-        }
-        this.mobileNum = ''
-        this.loginStatusCheck();
         this.updateState = updateState;
         this.backPress = new BackPressComponent({backPress: ()=> this.onBackPress()});
-
     }
 
     onBackPress() {
@@ -50,23 +47,8 @@ export default class AboutCommon {
 
     }
 
-    loginStatusCheck = () => {
-        AsyncStorage.getItem('loginStatus').then((value) => {
-            if (value) {
-                console.log("valParse",value);
-                let valParse = JSON.parse(value)
-                this.mobileNum = valParse.mobileNum
-                this.forceUpdate();
-                
-            } else {
-                
-            }
-        }).catch(() => {
-           
-        });
-    }
-
     componentDidMount() {
+        console.log("ttt")
         this.backPress.componentDidMount();
         fetch('http://www.devio.org/io/GitHubPopular/json/github_app_config.json')
             .then(response => {
@@ -91,17 +73,27 @@ export default class AboutCommon {
         this.backPress.componentWillUnmout();
     }
 
+    componentWillmout() {
+        console.log("jinlai666")
+    }
+
     onShare() {
-        this.DownloadLocalImage('http://a4.qpic.cn/psb?/V14gV2Ft3x6LH8/2GZ4FxekXevFPiZItmK1uGkNTHqNRg9jbTBwd2sCMa0!/m/dL8AAAAAAAAAnull&bo=7gI2BQAAAAARB.8!&rf=photolist&t=5')
+        this.DownloadLocalImage('http://r.photo.store.qq.com/psb?/V14gV2Ft3x6LH8/UkpBBlV3rJyASB.Zm8K9l7B12oPMOMjFXVN8DHDyYU4!/r/dL4AAAAAAAAA')
     }
 
     gotoLogin(pathName) {
         NavigatorUtil.goPage(this.props,pathName)
     }
 
+    copyText (textContent) {
+        Clipboard.setString(textContent);
+        //this.refs.toast.show('已复制到粘贴板');
+    }
+
 
     getParallaxRenderConfig = (params) => {
-        
+        console.log("ininini",JSON.stringify(this.props))
+        const { loginstatus } = this.props
         let config = {};
         let avatar = typeof(params.avatar) === 'string' ? {uri: params.avator} : params.avator;
         config.renderBackground = () => (
@@ -124,18 +116,34 @@ export default class AboutCommon {
         )
 
         config.renderForeground = () => (
-            
+           
             <View key="parallax-header" style={styles.parallaxHeader}>
                 <View style={styles.avatar}>
-                    <Text style={{color:'#999',fontSize:14}}>悦达人</Text>
+                    <Image style={{height: 80, width: 80,borderRadius:40}}
+                        defaultSource={require('../../../res/backgroundPic.png')} //默认图片
+                        source={require('../../../res/backgroundPic.png')}
+                    />
                 </View>
-                {this.mobileNum? <View><Text style={styles.sectionSpeakerText}>{this.mobileNum}</Text></View> : <TouchableOpacity 
+                {loginstatus.mobileNum? <View style={{flexDirection:'column'}}>
+                    <Text style={styles.loginText}>{`${loginstatus.mobileNum.substr(0,3)}****${loginstatus.mobileNum.substr(7,4)}`}</Text>
+                    <View style={{flexDirection:'row',justifyContent:'center'}}>
+                        <Text style={styles.loginText}>{`我的邀请码：${loginstatus.invitationCode}`}</Text>
+                        <View style={{width:1,height:10}}></View>
+                        {loginstatus.invitationCode?<TouchableOpacity onPress={()=>this.copyText(loginstatus.invitationCode)}>
+                            <View style={{width:38,height:18,justifyContent:'center',alignItems:'center',backgroundColor:'#ff4800',borderRadius:10,borderColor:'#ff4800',borderWidth:1,marginLeft:10}}>
+                                <Text style={{color:'#fff',fontSize:10}}>复制</Text>
+                            </View>
+                        </TouchableOpacity>:<View></View>}
+                    </View>
+                </View> : <TouchableOpacity 
                     activeOpacity={1}
-                    onPress={()=>this.gotoLogin('LoginPage')}
+                    onPress={()=>this.gotoLogin("LoginPage")}
                 >
-                    <Text style={styles.sectionSpeakerText}>登录/注册</Text>
+                    <Text style={styles.sectionSpeakerText}>注册/登录</Text>
                 </TouchableOpacity>}
-
+                <Toast ref={'toast'}
+                    position={'center'}
+                />
             </View>
         )
 
@@ -157,7 +165,7 @@ export default class AboutCommon {
     }
 
     render(contentView,params) {
-        console.log("this.mobileNum ",this.mobileNum)
+        console.log("contentView",contentView)
         console.log("this.pPPPs",JSON.stringify(this.props));
         const {theme}= this.props.flagAbout == "about_me" ? this.props.navigation.state.params : this.props;
         const renderConfig = this.getParallaxRenderConfig(params);
@@ -232,10 +240,16 @@ const styles = StyleSheet.create({
         backgroundColor:'#fff'
     },
     sectionSpeakerText: {
-        color: 'white',
+        color: '#fff',
         fontSize: 16,
         paddingVertical: 5,
         marginBottom: 10
+    },
+    loginText: {
+        color: '#e5e5e5',
+        height: 20,
+        lineHeight: 20,
+        fontSize: 14,
     },
     sectionTitleText: {
         color: 'white',

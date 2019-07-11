@@ -7,7 +7,7 @@ var width = WINDOW.width;
 
 class WelcomePage extends Component {
     componentDidMount() {
-        AsyncStorage.removeItem('isFirst')
+        //AsyncStorage.removeItem('isFirst')
         this.timer = setTimeout(()=> {
             AsyncStorage.getItem('isFirst').then((value) => {
                 // 重置到首页

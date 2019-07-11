@@ -24,22 +24,21 @@ export default class ViewUtil {
                     {Icons && icon ?
                         <Icons
                             name={icon}
-                            size={18}
+                            size={15}
                             style={{color: color,marginRight: 10}}
                         /> :
                         <View style={{opacity: 1,width:16,marginRight:10}}/>
                     }
-                    <Text>{text}</Text>
+                    <Text style={{fontSize:14}}>{text}</Text>
                 </View>
                 <AntDesign
                     name={expandableIco ? expandableIco : 'right'}
-                    size={18}
+                    size={12}
                     style={{
                         alignSelf: 'center',
                         color: color || 'black'
                     }}
                 />
-
             </TouchableOpacity>
         )
     }

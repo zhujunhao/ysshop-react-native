@@ -1,9 +1,8 @@
 import Types from '../types';
 import {_projectModels,doCallBack,handleData } from '../ActionUtil';
 import ArrayUtil from '../../src/util/ArrayUtil';
-import Utils from '../../src/util/Utils';
-
-const SEARCH_URL = 'https://www.yuegomall.com/api/v0/lists/$';
+import { configurationUrl } from '../ask/config';
+const SEARCH_URL = configurationUrl + '/api/v0/lists/$';
 const CANCEL_TOKENS = [];
 
 /**
@@ -32,6 +31,7 @@ export function onSearch(inputKey,pageSize,token,favoriteDao,recommendKeys,callB
                 doCallBack(callBack,`没找到关于${inputKey}的项目`);
                 return;
             }
+            console.log("favoriteDaosearch",JSON.stringify(favoriteDao))
             let items = responseData.textLists;
             handleData(Types.SEARCH_REFRESH_SUCCESS,dispatch,"",{data: items},pageSize,favoriteDao,{
                 inputKey
@@ -91,9 +91,6 @@ export function onSearch(inputKey,pageSize,token,favoriteDao,recommendKeys,callB
          },500)
      }
  }
-
-
-
 
   function genFetchUrl(key) {
       return SEARCH_URL + key;

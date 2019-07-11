@@ -13,7 +13,8 @@ import BackPressComponent from '../common/BackPressComponent';
 import FavoriteUtil from '../util/FavoriteUtil';
 import FavoriteDao from '../ask/FavoriteDao';
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.Collection);
-const URL = 'https://www.yuegomall.com/api/v0/lists';
+import { configurationUrl } from '../ask/config';
+const URL = configurationUrl + '/api/v0/lists';
 const pageSize = 10;//设为常量，防止修改
 
 class DetailPage extends Component {
@@ -202,9 +203,7 @@ class DetailPage extends Component {
     }
 
     renderItem(data) {
-        console.log("tardara",JSON.stringify(data))
         const { item } = data;
-        console.log("tarfet",JSON.stringify(item))
         const { theme } = this.params;
         return <RecommendItem
             projectModel={item}
@@ -267,6 +266,7 @@ class DetailPage extends Component {
                                 <Text>{`月销量${projectModel.item.monthNum}`}</Text>
                             </View>
                         </View>
+                        <View style={{flex:1,height:1,backgroundColor:'#eee',marginLeft:10,marginRight:10}}></View>
                         <View style={styles.topic}>
                             <Text style={styles.topicHead}>-----  相关推荐  -----</Text>
                             <FlatList
